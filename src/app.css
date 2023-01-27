@@ -31,3 +31,25 @@ a.noStyle:visited {
   text-decoration: inherit;
   color: inherit;
 }
+
+.test {
+  width: 5em;
+  height: 5em;
+  background-color: red;
+}
+
+.coin {
+  width: 4em;
+  height: 4em;
+
+  border-radius: 100%;
+  background-color: none;
+}
+
+.redCoin {
+  background-color: red;
+}
+
+.yellowCoin {
+  background-color: yellow;
+}

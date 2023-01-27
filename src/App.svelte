@@ -1,5 +1,5 @@
 <script lang="ts">
-
+  import Game from "./components/Game.svelte";
 </script>
 
 <style>
@@ -15,5 +15,6 @@
 </style>
 
 <div id="mainPage">
-
+  <Game />
 </div>
+
