@@ -1,12 +1,22 @@
 <script lang="ts">
     type Coin = 'redCoin' | 'yellowCoin' | null;
+    type Notification = 'It\'s reds turn' | 'It\'s yellows turn' | 'Yellow won!' | 'Red won!';
 
     const columnCount: number = 7;
     const rowCount: number = 6;
     let coin: Coin = 'redCoin';
+    let winstate = false;
+
+    let notification: Notification = 'It\'s reds turn';
 
     function win(team: Coin) {
-        alert(`${team} WON!`);
+        winstate = true;
+
+        if (team === 'redCoin') {
+            notification = 'Red won!';
+        } else {
+            notification = 'Yellow won!';
+        }
     }
 
     function switchCoin() {
@@ -96,8 +106,6 @@
             }
         }
 
-        console.log(startingPos);
-
         count = 1;
         for (let x = startingPos['x']; x < columnCount; x++) {
             if ((startingPos['x'] + 1) >= columnCount) break;
@@ -133,8 +141,6 @@
                 break;
             }
         }
-
-        console.log(startingPos);
 
         count = 1;
         for (let x = startingPos['x']; x < columnCount; x++) {
@@ -176,6 +182,8 @@
     }
 
     function click(e: MouseEvent) {
+        if (winstate) return;
+
         let target = e.target as HTMLElement;
 
         if (target.classList.contains("coin")) {
@@ -189,10 +197,23 @@
         if (target.classList.contains("column") && target.id.startsWith("column")) {
             spawnCoin(target);
         }
+
+        
+        if (winstate) {
+            return
+        } else if (coin == 'redCoin') {
+            notification = 'It\'s reds turn';
+        } else if (coin == 'yellowCoin') {
+            notification = 'It\'s yellows turn';
+        }
     }
 </script>
 
 <style>
+    h1 {
+        text-align: center;
+    }
+
     #gamefield {
         width: fit-content;
         height: fit-content;
@@ -242,16 +263,19 @@
 
 </style>
 
-<div id="gamefield">
-    {#each Array(columnCount) as _, i}
-        <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <div on:click={click} id="column{i}" class="column">
-            {#each Array(rowCount) as _}
-                <div class="slot">
-                    <div></div>
-                </div>
-            {/each}
-        </div>
-    {/each}
+<div>
+    <h1>{notification}</h1>
+    <div id="gamefield">
+        {#each Array(columnCount) as _, i}
+            <!-- svelte-ignore a11y-click-events-have-key-events -->
+            <div on:click={click} id="column{i}" class="column">
+                {#each Array(rowCount) as _}
+                    <div class="slot">
+                        <div></div>
+                    </div>
+                {/each}
+            </div>
+        {/each}
+    </div>
 </div>
 
