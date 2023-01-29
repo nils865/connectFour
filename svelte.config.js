@@ -6,3 +6,4 @@ export default {
   preprocess: vitePreprocess(),
   base: '/connectFour/',
 }
+ 
