@@ -1,9 +1,13 @@
 <script lang="ts">
-    type Coin = 'redCoin' | 'yellowCoin';
+    type Coin = 'redCoin' | 'yellowCoin' | null;
 
     const columnCount: number = 7;
     const rowCount: number = 6;
     let coin: Coin = 'redCoin';
+
+    function win(team: Coin) {
+        alert(`${team} WON!`);
+    }
 
     function switchCoin() {
         if (coin === 'redCoin') {
@@ -13,10 +17,77 @@
         }
     }
 
+    function getCoinState(slot: Element): Coin {
+        if (slot.children[0].classList.contains('redCoin')) {
+            return 'redCoin';
+        } else if (slot.children[0].classList.contains('yellowCoin')) {
+            return 'yellowCoin';
+        }
+
+        return null;
+    }
+
+    function checkForWin(coins: HTMLCollection, index: number) {
+        const newestElement = coins[index];
+        const state: Coin = getCoinState(newestElement);
+        let count = 1;
+
+        // check if its a column
+        for (let i = index + 1; i <= 5; i++) {
+            if (state != getCoinState(coins[i])) {
+                count = 1;
+                break;
+            }
+
+            count++;
+
+            if (count >= 4) {
+                win(state);
+            }
+        }
+
+        // check if its a row
+        const getColumnId = (e: HTMLElement): number => parseInt(e.id[e.id.length - 1]);
+
+        const currentColumn = getColumnId(newestElement.parentElement as HTMLElement);
+
+        // get starting pos
+        // let startingPos: HTMLElement = document.getElementById(`column${currentColumn}`).children[index].children[0] as HTMLElement;
+        let startingPos: number = currentColumn;
+
+        for (let i = currentColumn; i > 0; i--) {
+            const nextElement = document.getElementById(`column${i - 1}`).children[index].children[0] as HTMLElement;
+
+            if (nextElement.classList.contains(state)) {
+                startingPos = i - 1;
+            } else {
+                break;
+            }
+        }
+
+        console.log(startingPos);
+
+        count = 0;
+
+        for (let i = startingPos; i < columnCount; i++) {
+            const element: HTMLElement = document.getElementById(`column${i}`).children[index].children[0] as HTMLElement;
+
+            console.log(element);
+
+            if (element.classList.contains(state)) {
+                count++;
+            } else {
+                break;
+            }
+
+            if (count >= 4) {
+                win(state);
+            }
+        }
+    }
+
     function spawnCoin(e: HTMLElement) {
         const children: HTMLCollection = e.children;
-
-        // console.log(children)
 
         for (let i = children.length - 1; i >= 0; i--) {
             const child = children[i] as HTMLElement;
@@ -25,10 +96,12 @@
 
             child.children[0].classList.add(coin);
             child.children[0].classList.add('coin');
+
+            checkForWin(children, i);
+
             switchCoin();
             break;
         }
-
     }
 
     function click(e: MouseEvent) {
