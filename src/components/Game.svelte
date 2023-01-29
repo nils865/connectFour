@@ -52,14 +52,45 @@
         const currentColumn = getColumnId(newestElement.parentElement as HTMLElement);
 
         // get starting pos
-        // let startingPos: HTMLElement = document.getElementById(`column${currentColumn}`).children[index].children[0] as HTMLElement;
-        let startingPos: number = currentColumn;
+        let startingColumn: number = currentColumn;
 
         for (let i = currentColumn; i > 0; i--) {
             const nextElement = document.getElementById(`column${i - 1}`).children[index].children[0] as HTMLElement;
 
             if (nextElement.classList.contains(state)) {
-                startingPos = i - 1;
+                startingColumn = i - 1;
+            } else {
+                break;
+            }
+        }
+
+        count = 0;
+
+        for (let i = startingColumn; i < columnCount; i++) {
+            const element: HTMLElement = document.getElementById(`column${i}`).children[index].children[0] as HTMLElement;
+
+            if (element.classList.contains(state)) {
+                count++;
+            } else {
+                break;
+            }
+
+            if (count >= 4) {
+                win(state);
+            }
+        }
+
+        // check if its a diagonal
+        let startingPos = { x: currentColumn, y: index };
+        for (let x = startingPos['x']; x >= 0; x--) {
+            if ((startingPos['x'] - 1) < 0) break;
+            if ((startingPos['y'] + 1) >= rowCount) break;
+
+            const nextElement = document.getElementById(`column${x - 1}`).children[startingPos['y'] + 1].children[0] as HTMLElement;
+
+            if (nextElement.classList.contains(state)) {
+                startingPos['x'] = x - 1;
+                startingPos['y'] = startingPos['y'] + 1;
             } else {
                 break;
             }
@@ -67,14 +98,54 @@
 
         console.log(startingPos);
 
-        count = 0;
+        count = 1;
+        for (let x = startingPos['x']; x < columnCount; x++) {
+            if ((startingPos['x'] + 1) >= columnCount) break;
+            if ((startingPos['y'] - 1) < 0) break;
 
-        for (let i = startingPos; i < columnCount; i++) {
-            const element: HTMLElement = document.getElementById(`column${i}`).children[index].children[0] as HTMLElement;
+            const nextElement = document.getElementById(`column${x + 1}`).children[startingPos['y'] - 1].children[0] as HTMLElement;
 
-            console.log(element);
+            if (nextElement.classList.contains(state)) {
+                startingPos['x'] = x + 1;
+                startingPos['y'] = startingPos['y'] - 1;
+                count++;
+            } else {
+                break;
+            }
 
-            if (element.classList.contains(state)) {
+            if (count >= 4) {
+                win(state);
+            }
+        }
+
+        // but now the other way
+        startingPos = { x: currentColumn, y: index };
+        for (let x = startingPos['x']; x >= 0; x--) {
+            if ((startingPos['x'] - 1) < 0) break;
+            if ((startingPos['y'] - 1) < 0) break;
+
+            const nextElement = document.getElementById(`column${x - 1}`).children[startingPos['y'] - 1].children[0] as HTMLElement;
+
+            if (nextElement.classList.contains(state)) {
+                startingPos['x'] = x - 1;
+                startingPos['y'] = startingPos['y'] - 1;
+            } else {
+                break;
+            }
+        }
+
+        console.log(startingPos);
+
+        count = 1;
+        for (let x = startingPos['x']; x < columnCount; x++) {
+            if ((startingPos['x'] + 1) >= columnCount) break;
+            if ((startingPos['y'] + 1) >= rowCount) break;
+
+            const nextElement = document.getElementById(`column${x + 1}`).children[startingPos['y'] + 1].children[0] as HTMLElement;
+
+            if (nextElement.classList.contains(state)) {
+                startingPos['x'] = x + 1;
+                startingPos['y'] = startingPos['y'] + 1;
                 count++;
             } else {
                 break;
