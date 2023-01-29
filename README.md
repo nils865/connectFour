@@ -1,1 +1,0 @@
-# Simple Connect Four Game
