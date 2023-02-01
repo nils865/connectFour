@@ -1,5 +1,4 @@
 <script lang="ts">
-  import AI from "./components/AI.svelte";
   import Game from "./components/Game.svelte";
 
   let mode = "twoP";
