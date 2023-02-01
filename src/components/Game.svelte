@@ -1,11 +1,8 @@
 <script lang="ts">
     import type { Mode } from "../App.svelte";
-
-    type Coin = 'redCoin' | 'yellowCoin' | null;
-    type Notification = 'It\'s reds turn' | 'It\'s yellows turn' | 'Yellow won!' | 'Red won!';
-
-    const columnCount: number = 7;
-    const rowCount: number = 6;
+    import type { Coin, Notification } from "./GameController.svelte";
+    import { columnCount, rowCount } from "./GameController.svelte";
+    
     let coin: Coin = 'redCoin';
     let winstate = false;
     let gamemode: Mode = 'twoPlayer';
@@ -195,7 +192,7 @@
 
         if (target.classList.contains("slot")) {
             target = target.parentElement as HTMLElement;
-        }
+        } 
 
         if (target.classList.contains("column") && target.id.startsWith("column")) {
             spawnCoin(target);
