@@ -1,6 +1,5 @@
 <script lang="ts">
-    import type { Mode, Coin, Notification } from "./modules/GameController.svelte";
-    import { columnCount, rowCount } from "./modules/GameController.svelte";
+    import { type Mode, type Coin, type Notification, blink, columnCount, rowCount, addBlink, removeBlink } from "./modules/GameController.svelte";
     
     let coin: Coin = 'redCoin';
     let winstate = false;
@@ -39,21 +38,24 @@
     function checkForWin(coins: HTMLCollection, index: number) {
         const newestElement = coins[index];
         const state: Coin = getCoinState(newestElement);
-        let count = 1;
+        let count = 0;
 
         // check if its a column
-        for (let i = index + 1; i <= 5; i++) {
+        for (let i = index; i <= 5; i++) {
             if (state != getCoinState(coins[i])) {
-                count = 1;
+                count = 0;
                 break;
             }
 
+            addBlink(coins[i].children[0] as HTMLElement);
             count++;
 
             if (count >= 4) {
                 win(state);
+                return;
             }
         }
+        removeBlink();
 
         // check if its a row
         const getColumnId = (e: HTMLElement): number => parseInt(e.id[e.id.length - 1]);
@@ -79,6 +81,7 @@
             const element: HTMLElement = document.getElementById(`column${i}`).children[index].children[0] as HTMLElement;
 
             if (element.classList.contains(state)) {
+                addBlink(element as HTMLElement);
                 count++;
             } else {
                 break;
@@ -86,8 +89,10 @@
 
             if (count >= 4) {
                 win(state);
+                return;
             }
         }
+        removeBlink();
 
         // check if its a diagonal
         let startingPos = { x: currentColumn, y: index };
@@ -104,7 +109,8 @@
                 break;
             }
         }
-
+        
+        addBlink(document.getElementById(`column${startingPos['x']}`).children[startingPos['y']].children[0] as HTMLElement);
         count = 1;
         for (let x = startingPos['x']; x < columnCount; x++) {
             if ((startingPos['x'] + 1) >= columnCount) break;
@@ -115,6 +121,8 @@
             if (nextElement.classList.contains(state)) {
                 startingPos['x'] = x + 1;
                 startingPos['y'] = startingPos['y'] - 1;
+
+                addBlink(nextElement as HTMLElement);
                 count++;
             } else {
                 break;
@@ -122,8 +130,10 @@
 
             if (count >= 4) {
                 win(state);
+                return;
             }
         }
+        removeBlink();
 
         // but now the other way
         startingPos = { x: currentColumn, y: index };
@@ -151,6 +161,8 @@
             if (nextElement.classList.contains(state)) {
                 startingPos['x'] = x + 1;
                 startingPos['y'] = startingPos['y'] + 1;
+
+                addBlink(nextElement as HTMLElement);
                 count++;
             } else {
                 break;
@@ -158,8 +170,11 @@
 
             if (count >= 4) {
                 win(state);
+                return;
             }
         }
+
+        removeBlink();
     }
 
     function spawnCoin(e: HTMLElement) {
@@ -196,7 +211,8 @@
         if (target.classList.contains("column") && target.id.startsWith("column")) {
             spawnCoin(target);
         }
-
+        
+        blink();
         
         if (winstate) {
             return
