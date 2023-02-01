@@ -1,6 +1,6 @@
 <script lang="ts">
-    import type { Mode, Coin, Notification } from "./GameController.svelte";
-    import { columnCount, rowCount } from "./GameController.svelte";
+    import type { Mode, Coin, Notification } from "./modules/GameController.svelte";
+    import { columnCount, rowCount } from "./modules/GameController.svelte";
     
     let coin: Coin = 'redCoin';
     let winstate = false;
