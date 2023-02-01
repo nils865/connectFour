@@ -1,6 +1,5 @@
 <script lang="ts">
-    import type { Mode } from "../App.svelte";
-    import type { Coin, Notification } from "./GameController.svelte";
+    import type { Mode, Coin, Notification } from "./GameController.svelte";
     import { columnCount, rowCount } from "./GameController.svelte";
     
     let coin: Coin = 'redCoin';

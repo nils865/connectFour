@@ -1,8 +1,7 @@
-<script context="module" lang="ts">
+<script lang="ts">
+  import type { Mode } from "./components/GameController.svelte";
   import Game from "./components/Game.svelte";
   
-  export type Mode = "twoPlayer" | "onePlayer";
-
   let mode: Mode = "twoPlayer";
 </script>
 
