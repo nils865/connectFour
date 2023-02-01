@@ -1,4 +1,6 @@
 <script lang="ts">
+    import type { Mode } from "../App.svelte";
+
     type Coin = 'redCoin' | 'yellowCoin' | null;
     type Notification = 'It\'s reds turn' | 'It\'s yellows turn' | 'Yellow won!' | 'Red won!';
 
@@ -6,6 +8,7 @@
     const rowCount: number = 6;
     let coin: Coin = 'redCoin';
     let winstate = false;
+    let gamemode: Mode = 'twoPlayer';
 
     let notification: Notification = 'It\'s reds turn';
 
@@ -278,4 +281,3 @@
         {/each}
     </div>
 </div>
-

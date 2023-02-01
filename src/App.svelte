@@ -1,7 +1,9 @@
-<script lang="ts">
+<script context="module" lang="ts">
   import Game from "./components/Game.svelte";
+  
+  export type Mode = "twoPlayer" | "onePlayer";
 
-  let mode = "twoP";
+  let mode: Mode = "twoPlayer";
 </script>
 
 <style>
@@ -31,13 +33,13 @@
 
 <div id="mainPage">
   <select bind:value={mode} name="mode" id="mode">
-    <option value="twoP">2p</option>
-    <option value="oneP">1p</option>
+    <option value="twoPlayer">2p</option>
+    <option value="onePlayer">1p</option>
   </select>
-  {#if mode === "twoP"}
+  {#if mode === "twoPlayer"}
     <Game />
   {/if}
-  {#if mode === "oneP"}
+  {#if mode === "onePlayer"}
     <h1>W.I.P.</h1>
   {/if}
 </div>
