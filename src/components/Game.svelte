@@ -1,10 +1,8 @@
 <script lang="ts">
-    import { blink, columnCount, rowCount, addBlink, removeBlink } from "./modules/GameController";
+    import { switchCoin, Blink, columnCount, rowCount } from "./modules/GameController";
     import { notification, winstate, coin } from "../stores";
-    import type { Mode, Coin } from "../types";
+    import type { Coin } from "../types";
     
-    let gamemode: Mode = 'twoPlayer';
-
     function win(team: Coin) {
         $winstate = true;
 
@@ -12,14 +10,6 @@
             $notification = 'Red won!';
         } else {
             $notification = 'Yellow won!';
-        }
-    }
-
-    function switchCoin() {
-        if ($coin === 'redCoin') {
-            $coin = 'yellowCoin';
-        } else {
-            $coin = 'redCoin';
         }
     }
 
@@ -45,7 +35,7 @@
                 break;
             }
 
-            addBlink(coins[i].children[0] as HTMLElement);
+            Blink.addShouldBlink(coins[i].children[0] as HTMLElement);
             count++;
 
             if (count >= 4) {
@@ -53,7 +43,7 @@
                 return;
             }
         }
-        removeBlink();
+        Blink.removeAllShouldBlink();
 
         // check if its a row
         const getColumnId = (e: HTMLElement): number => parseInt(e.id[e.id.length - 1]);
@@ -79,7 +69,7 @@
             const element: HTMLElement = document.getElementById(`column${i}`).children[index].children[0] as HTMLElement;
 
             if (element.classList.contains(state)) {
-                addBlink(element as HTMLElement);
+                Blink.addShouldBlink(element as HTMLElement);
                 count++;
             } else {
                 break;
@@ -90,7 +80,7 @@
                 return;
             }
         }
-        removeBlink();
+        Blink.removeAllShouldBlink();
 
         // check if its a diagonal
         let startingPos = { x: currentColumn, y: index };
@@ -108,7 +98,7 @@
             }
         }
         
-        addBlink(document.getElementById(`column${startingPos['x']}`).children[startingPos['y']].children[0] as HTMLElement);
+        Blink.addShouldBlink(document.getElementById(`column${startingPos['x']}`).children[startingPos['y']].children[0] as HTMLElement);
         count = 1;
         for (let x = startingPos['x']; x < columnCount; x++) {
             if ((startingPos['x'] + 1) >= columnCount) break;
@@ -120,7 +110,7 @@
                 startingPos['x'] = x + 1;
                 startingPos['y'] = startingPos['y'] - 1;
 
-                addBlink(nextElement as HTMLElement);
+                Blink.addShouldBlink(nextElement as HTMLElement);
                 count++;
             } else {
                 break;
@@ -131,11 +121,11 @@
                 return;
             }
         }
-        removeBlink();
+        Blink.removeAllShouldBlink();
 
         // but now the other way
         startingPos = { x: currentColumn, y: index };
-        addBlink(document.getElementById(`column${startingPos['x']}`).children[startingPos['y']].children[0] as HTMLElement);
+        Blink.addShouldBlink(document.getElementById(`column${startingPos['x']}`).children[startingPos['y']].children[0] as HTMLElement);
         for (let x = startingPos['x']; x >= 0; x--) {
             if ((startingPos['x'] - 1) < 0) break;
             if ((startingPos['y'] - 1) < 0) break;
@@ -161,7 +151,7 @@
                 startingPos['x'] = x + 1;
                 startingPos['y'] = startingPos['y'] + 1;
 
-                addBlink(nextElement as HTMLElement);
+                Blink.addShouldBlink(nextElement as HTMLElement);
                 count++;
             } else {
                 break;
@@ -173,7 +163,7 @@
             }
         }
 
-        removeBlink();
+        Blink.removeAllShouldBlink();
     }
 
     function spawnCoin(e: HTMLElement) {
@@ -211,7 +201,7 @@
             spawnCoin(target);
         }
         
-        blink();
+        Blink.convertAllBlinks();
         
         if ($winstate) {
             return

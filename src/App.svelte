@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { type Mode, refreshGame } from "./components/modules/GameController";
+  import { refreshGame } from "./components/modules/GameController";
+  import type { Mode } from "./types";
   import Game from "./components/Game.svelte";
   
   let mode: Mode = "twoPlayer";

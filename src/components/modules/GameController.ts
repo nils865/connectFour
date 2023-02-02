@@ -17,18 +17,36 @@ function getAllCoins(fn: Function) {
     }
 }
 
-export function addBlink(e: HTMLElement) {
-    e.classList.add('shouldBlink');
+export class Blink {
+    public static addShouldBlink(e: HTMLElement) {
+        e.classList.add('shouldBlink');
+    }
+    
+    public static removeAllShouldBlink() {
+        getAllCoins((e: HTMLElement) => {
+            if (e.classList.contains('shouldBlink')) {
+                e.classList.remove('shouldBlink')
+            }
+        });
+    }
+    
+    public static convertAllBlinks() {
+        getAllCoins((e: HTMLElement) => {
+            if (e.classList.contains('shouldBlink')) {
+                e.classList.add('blink')
+            }
+        });
+    
+        this.removeAllShouldBlink();
+    }
 }
 
 export function refreshGame() {
     winstate.set(false);
     coin.set('redCoin');
     notification.set('It\'s reds turn');
-    console.log("refresh");
     
     getAllCoins((e: HTMLElement) => {
-        console.log(e)
         e.classList.remove('coin');
         e.classList.remove('blink');
         
@@ -40,20 +58,13 @@ export function refreshGame() {
     });
 }
 
-export function removeBlink() {
-    getAllCoins((e: HTMLElement) => {
-        if (e.classList.contains('shouldBlink')) {
-            e.classList.remove('shouldBlink')
-        }
-    });
-}
+export function switchCoin() {
+    let coinState = null;
+    coin.subscribe((value) => coinState = value);
 
-export function blink() {
-    getAllCoins((e: HTMLElement) => {
-        if (e.classList.contains('shouldBlink')) {
-            e.classList.add('blink')
-        }
-    });
-
-    removeBlink();
+    if (coinState === 'redCoin') {
+        coin.set('yellowCoin');
+    } else {
+        coin.set('redCoin');
+    }
 }
