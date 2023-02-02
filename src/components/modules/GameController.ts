@@ -1,4 +1,5 @@
 import { notification, winstate, coin } from "../../stores";
+import type { Coin } from "../../types";
 
 export const columnCount: number = 7;
 export const rowCount: number = 6;
@@ -14,6 +15,17 @@ function getAllCoins(fn: Function) {
 
             fn(currentChild);
         }
+    }
+}
+
+function switchCoin() {
+    let coinState = null;
+    coin.subscribe((value) => coinState = value);
+
+    if (coinState === 'redCoin') {
+        coin.set('yellowCoin');
+    } else {
+        coin.set('redCoin');
     }
 }
 
@@ -58,13 +70,36 @@ export function refreshGame() {
     });
 }
 
-export function switchCoin() {
-    let coinState = null;
-    coin.subscribe((value) => coinState = value);
+export function getCoinState(slot: Element): Coin {
+    if (slot.children[0].classList.contains('redCoin')) {
+        return 'redCoin';
+    } else if (slot.children[0].classList.contains('yellowCoin')) {
+        return 'yellowCoin';
+    }
 
-    if (coinState === 'redCoin') {
-        coin.set('yellowCoin');
-    } else {
-        coin.set('redCoin');
+    return null;
+}
+
+export function spawnCoin(e: HTMLElement) {
+    const children: HTMLCollection = e.children;
+
+    for (let i = children.length - 1; i >= 0; i--) {
+        const child = children[i] as HTMLElement;
+
+        if (child.children[0].classList.contains('coin')) continue;
+
+        let currentCoin = null;
+        coin.subscribe((value) => currentCoin = value);
+
+        child.children[0].classList.add(currentCoin);
+        child.children[0].classList.add('coin');
+
+        const output = {
+            children: children,
+            index: i
+        }
+
+        switchCoin();
+        return output;
     }
 }

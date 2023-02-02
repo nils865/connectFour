@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { switchCoin, Blink, columnCount, rowCount } from "./modules/GameController";
+    import { Blink, columnCount, rowCount, getCoinState, spawnCoin } from "./modules/GameController";
     import { notification, winstate, coin } from "../stores";
     import type { Coin } from "../types";
     
@@ -11,16 +11,6 @@
         } else {
             $notification = 'Yellow won!';
         }
-    }
-
-    function getCoinState(slot: Element): Coin {
-        if (slot.children[0].classList.contains('redCoin')) {
-            return 'redCoin';
-        } else if (slot.children[0].classList.contains('yellowCoin')) {
-            return 'yellowCoin';
-        }
-
-        return null;
     }
 
     function checkForWin(coins: HTMLCollection, index: number) {
@@ -166,24 +156,6 @@
         Blink.removeAllShouldBlink();
     }
 
-    function spawnCoin(e: HTMLElement) {
-        const children: HTMLCollection = e.children;
-
-        for (let i = children.length - 1; i >= 0; i--) {
-            const child = children[i] as HTMLElement;
-
-            if (child.children[0].classList.contains('coin')) continue;
-
-            child.children[0].classList.add($coin);
-            child.children[0].classList.add('coin');
-
-            checkForWin(children, i);
-
-            switchCoin();
-            break;
-        }
-    }
-
     function click(e: MouseEvent) {
         if ($winstate) return;
 
@@ -195,10 +167,12 @@
 
         if (target.classList.contains("slot")) {
             target = target.parentElement as HTMLElement;
-        } 
+        }
 
         if (target.classList.contains("column") && target.id.startsWith("column")) {
-            spawnCoin(target);
+            const coinList = spawnCoin(target);
+
+            checkForWin(coinList["children"], coinList["index"]);
         }
         
         Blink.convertAllBlinks();
