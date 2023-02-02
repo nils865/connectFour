@@ -1,27 +1,25 @@
 <script lang="ts">
-    import { type Mode, type Coin, type Notification, blink, columnCount, rowCount, addBlink, removeBlink } from "./modules/GameController.svelte";
+    import { blink, columnCount, rowCount, addBlink, removeBlink } from "./modules/GameController";
+    import { notification, winstate, coin } from "../stores";
+    import type { Mode, Coin } from "../types";
     
-    let coin: Coin = 'redCoin';
-    let winstate = false;
     let gamemode: Mode = 'twoPlayer';
 
-    let notification: Notification = 'It\'s reds turn';
-
     function win(team: Coin) {
-        winstate = true;
+        $winstate = true;
 
         if (team === 'redCoin') {
-            notification = 'Red won!';
+            $notification = 'Red won!';
         } else {
-            notification = 'Yellow won!';
+            $notification = 'Yellow won!';
         }
     }
 
     function switchCoin() {
-        if (coin === 'redCoin') {
-            coin = 'yellowCoin';
+        if ($coin === 'redCoin') {
+            $coin = 'yellowCoin';
         } else {
-            coin = 'redCoin';
+            $coin = 'redCoin';
         }
     }
 
@@ -137,6 +135,7 @@
 
         // but now the other way
         startingPos = { x: currentColumn, y: index };
+        addBlink(document.getElementById(`column${startingPos['x']}`).children[startingPos['y']].children[0] as HTMLElement);
         for (let x = startingPos['x']; x >= 0; x--) {
             if ((startingPos['x'] - 1) < 0) break;
             if ((startingPos['y'] - 1) < 0) break;
@@ -185,7 +184,7 @@
 
             if (child.children[0].classList.contains('coin')) continue;
 
-            child.children[0].classList.add(coin);
+            child.children[0].classList.add($coin);
             child.children[0].classList.add('coin');
 
             checkForWin(children, i);
@@ -196,7 +195,7 @@
     }
 
     function click(e: MouseEvent) {
-        if (winstate) return;
+        if ($winstate) return;
 
         let target = e.target as HTMLElement;
 
@@ -214,21 +213,17 @@
         
         blink();
         
-        if (winstate) {
+        if ($winstate) {
             return
-        } else if (coin == 'redCoin') {
-            notification = 'It\'s reds turn';
-        } else if (coin == 'yellowCoin') {
-            notification = 'It\'s yellows turn';
+        } else if ($coin == 'redCoin') {
+            $notification = 'It\'s reds turn';
+        } else if ($coin == 'yellowCoin') {
+            $notification = 'It\'s yellows turn';
         }
     }
 </script>
 
 <style>
-    h1 {
-        text-align: center;
-    }
-
     #gamefield {
         width: fit-content;
         height: fit-content;
@@ -276,10 +271,13 @@
         border-bottom: var(--txt) 4px solid;
     }
 
+    h1 {
+        text-align: center;
+    }
 </style>
 
 <div>
-    <h1>{notification}</h1>
+    <h1>{$notification}</h1>
     <div id="gamefield">
         {#each Array(columnCount) as _, i}
             <!-- svelte-ignore a11y-click-events-have-key-events -->

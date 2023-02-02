@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Mode } from "./components/modules/GameController.svelte";
+  import { type Mode, refreshGame } from "./components/modules/GameController";
   import Game from "./components/Game.svelte";
   
   let mode: Mode = "twoPlayer";
@@ -28,13 +28,31 @@
     width: 5em;
     text-align: center;
   }
+
+  #refresh {
+    width: 40px;
+    height: 40px;
+    
+    margin-right: 1em;
+  }
+
+  #globalHead {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
 </style>
 
 <div id="mainPage">
-  <select bind:value={mode} name="mode" id="mode">
-    <option value="twoPlayer">2p</option>
-    <option value="onePlayer">1p</option>
-  </select>
+  <div id="globalHead">
+    <!-- svelte-ignore a11y-click-events-have-key-events -->
+    <img on:click={() => refreshGame()} id="refresh" src="/img/refresh.svg" alt="refresh" draggable="false">
+    <select bind:value={mode} name="mode" id="mode">
+      <option value="twoPlayer">2p</option>
+      <option value="onePlayer">1p</option>
+    </select>
+  </div>
   {#if mode === "twoPlayer"}
     <Game />
   {/if}
