@@ -35,6 +35,16 @@
     height: 40px;
     
     margin-right: 1em;
+    border-radius: 1;
+
+    transition: all 0.1s ease-in-out;
+  }
+
+  #refresh:hover {
+    cursor: pointer;
+
+    background-color: #404040;
+    border-radius: 10px;
   }
 
   #globalHead {

@@ -12,6 +12,15 @@ function win(team: Coin) {
     }
 }
 
+function checkForFourInARow(count, state): boolean {
+    if (count >= 4) {
+        win(state);
+        return true;
+    }
+
+    return false;
+}
+
 export function checkForWin(coins: HTMLCollection, index: number) {
     const newestElement = coins[index];
     const state: Coin = getCoinState(newestElement);
@@ -20,17 +29,14 @@ export function checkForWin(coins: HTMLCollection, index: number) {
     // check if its a column
     for (let i = index; i <= 5; i++) {
         if (state != getCoinState(coins[i])) {
+            if (checkForFourInARow(count, state)) return;
+
             count = 0;
             break;
         }
 
         Blink.addShouldBlink(coins[i].children[0] as HTMLElement);
         count++;
-
-        if (count >= 4) {
-            win(state);
-            return;
-        }
     }
     Blink.removeAllShouldBlink();
 
@@ -63,12 +69,9 @@ export function checkForWin(coins: HTMLCollection, index: number) {
         } else {
             break;
         }
-
-        if (count >= 4) {
-            win(state);
-            return;
-        }
     }
+    if (checkForFourInARow(count, state)) return;
+
     Blink.removeAllShouldBlink();
 
     // check if its a diagonal
@@ -104,12 +107,9 @@ export function checkForWin(coins: HTMLCollection, index: number) {
         } else {
             break;
         }
-
-        if (count >= 4) {
-            win(state);
-            return;
-        }
     }
+    if (checkForFourInARow(count, state)) return;
+
     Blink.removeAllShouldBlink();
 
     // but now the other way
@@ -143,14 +143,12 @@ export function checkForWin(coins: HTMLCollection, index: number) {
             Blink.addShouldBlink(nextElement as HTMLElement);
             count++;
         } else {
+            if (checkForFourInARow(count, state)) return;
+            
             break;
         }
-
-        if (count >= 4) {
-            win(state);
-            return;
-        }
     }
+    if (checkForFourInARow(count, state)) return;
 
     Blink.removeAllShouldBlink();
 }
