@@ -6,9 +6,9 @@ function win(team: Coin) {
     winstate.set(true);
 
     if (team === 'redCoin') {
-        notification.set('Red won!');
+        notification.set(`<span style="color: red">Red</span> won!`);
     } else {
-        notification.set('Yellow won!');
+        notification.set(`<span style="color: yellow">Yellow</span> won!`);
     }
 }
 
