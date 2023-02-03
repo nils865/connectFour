@@ -40,10 +40,9 @@ function checkColumn(coins: HTMLCollection, state: Coin, index: number): boolean
 function checkRow(coins: HTMLCollection, state: Coin, index: number): boolean {
     // get starting pos
     const columns = document.getElementsByClassName('column') as HTMLCollection;
-    const newestColumnId = parseInt(coins[0].parentElement.id[coins[0].parentElement.id.length - 1]);
 
     let startPos: number = -1;
-    for (let i = newestColumnId; i >= 0 && startPos < 0; i--) {
+    for (let i = parseInt(coins[0].parentElement.id[coins[0].parentElement.id.length - 1]); i >= 0 && startPos < 0; i--) {
         if (state != getCoinState(columns[i].children[index])) startPos = i;
     }
     startPos++;
@@ -65,11 +64,14 @@ function checkRow(coins: HTMLCollection, state: Coin, index: number): boolean {
     return false;
 }
 
-export function checkForWin(coins: HTMLCollection, index: number) {
+export function checkForWin(coins: HTMLCollection, index: number): boolean {
     const state: Coin = getCoinState(coins[index]);
+    let win: boolean = false;
 
-    if (checkColumn(coins, state, index)) return;
-    if (checkRow(coins, state, index)) return;
+    if (checkColumn(coins, state, index)) win = true;
+    if (checkRow(coins, state, index)) win = true;
+
+    return win;
 }
 
 // export function checkForWin(coins: HTMLCollection, index: number) {
