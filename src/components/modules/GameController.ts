@@ -56,7 +56,7 @@ export class Blink {
 export function refreshGame() {
     winstate.set(false);
     coin.set('redCoin');
-    notification.set('It\'s reds turn');
+    notification.set(`It's <span style="color: red">reds</span> turn`);
     
     getAllCoins((e: HTMLElement) => {
         e.classList.remove('coin');

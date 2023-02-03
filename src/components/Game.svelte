@@ -20,15 +20,14 @@
         } else {
             return;
         }
-        
-        Blink.convertAllBlinks();
+
         
         if ($winstate) {
             return;
         } else if ($coin == 'redCoin') {
-            $notification = 'It\'s reds turn';
+            $notification = `It's <span style="color: red">reds</span> turn`
         } else if ($coin == 'yellowCoin') {
-            $notification = 'It\'s yellows turn';
+            $notification = `It's <span style="color: yellow">yellows</span> turn`;
         }
     }
 </script>
@@ -87,7 +86,7 @@
 </style>
 
 <div>
-    <h1>{$notification}</h1>
+    <h1>{@html $notification}</h1>
     <div id="gamefield">
         {#each Array(columnCount) as _, i}
             <!-- svelte-ignore a11y-click-events-have-key-events -->
