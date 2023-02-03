@@ -13,8 +13,6 @@ function win(team: Coin) {
 }
 
 function checkForFourInARow(count: number, state: Coin): boolean {
-    console.table({count: count, state: state})
-
     if (count >= 4) {
         win(state);
         return true;
@@ -39,10 +37,39 @@ function checkColumn(coins: HTMLCollection, state: Coin, index: number): boolean
     return false;
 }
 
+function checkRow(coins: HTMLCollection, state: Coin, index: number): boolean {
+    // get starting pos
+    const columns = document.getElementsByClassName('column') as HTMLCollection;
+    const newestColumnId = parseInt(coins[0].parentElement.id[coins[0].parentElement.id.length - 1]);
+
+    let startPos: number = -1;
+    for (let i = newestColumnId; i >= 0 && startPos < 0; i--) {
+        if (state != getCoinState(columns[i].children[index])) startPos = i;
+    }
+    startPos++;
+
+    // get row
+    let count = 0;
+    for (let i = startPos; i < columnCount; i++) {
+        if (state === getCoinState(columns[i].children[index])) {
+            Blink.addShouldBlink(columns[i].children[index].children[0] as HTMLElement);
+            count++;
+        }
+        else break;
+    }
+
+    if (checkForFourInARow(count, state)) return true;
+
+    Blink.removeAllShouldBlink();
+
+    return false;
+}
+
 export function checkForWin(coins: HTMLCollection, index: number) {
     const state: Coin = getCoinState(coins[index]);
 
     if (checkColumn(coins, state, index)) return;
+    if (checkRow(coins, state, index)) return;
 }
 
 // export function checkForWin(coins: HTMLCollection, index: number) {
