@@ -20,8 +20,7 @@
         } else {
             return;
         }
-        
-        Blink.convertAllBlinks();
+
         
         if ($winstate) {
             return;
