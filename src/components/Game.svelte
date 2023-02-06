@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Blink, columnCount, rowCount, spawnCoin } from "./modules/GameController";
+    import { columnCount, rowCount, spawnCoin } from "./modules/GameController";
     import { notification, winstate, coin } from "../stores";
     import { checkForWin } from "./modules/WinGame";
 
@@ -20,7 +20,6 @@
         } else {
             return;
         }
-
         
         if ($winstate) {
             return;

@@ -2,7 +2,7 @@ import { winstate, notification } from "../../stores";
 import type { Coin } from "../../types";
 import { Blink, getCoinState, columnCount, rowCount } from "./GameController";
 
-function win(team: Coin) {
+function endGame(team: Coin) {
     winstate.set(true);
 
     if (team === 'redCoin') {
@@ -14,7 +14,7 @@ function win(team: Coin) {
 
 function checkForFourInARow(count: number, state: Coin): boolean {
     if (count >= 4) {
-        win(state);
+        endGame(state);
         Blink.convertAllBlinks();
         return true;
     }
