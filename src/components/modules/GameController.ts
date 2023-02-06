@@ -1,5 +1,5 @@
 import { notification, winstate, coin } from "../../stores";
-import type { Coin } from "../../types";
+import type { Coin, CoinList } from "../../types";
 
 export const columnCount: number = 7;
 export const rowCount: number = 6;
@@ -80,7 +80,7 @@ export function getCoinState(slot: Element): Coin {
     return null;
 }
 
-export function spawnCoin(e: HTMLElement) {
+export function spawnCoin(e: HTMLElement): CoinList {
     const children: HTMLCollection = e.children;
 
     for (let i = children.length - 1; i >= 0; i--) {
