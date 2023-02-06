@@ -1,6 +1,6 @@
 <script lang="ts">
     import { columnCount, rowCount, spawnCoin } from "./modules/GameController";
-    import { notification, winstate, coin } from "../stores";
+    import { notification, winstate, coin, gamemode } from "../stores";
     import { checkForWin } from "./modules/WinGame";
     import { AI } from "./modules/AI";
 
@@ -20,6 +20,10 @@
             if (coinList == null) return;
 
             checkForWin(coinList["children"], coinList["index"]);
+
+            if ($gamemode == "onePlayer") {
+                ai.spawnCoin();
+            }
         } else return;
         
         if ($winstate) return;
