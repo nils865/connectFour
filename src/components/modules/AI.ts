@@ -1,3 +1,4 @@
+import type { CoinList } from "../../types";
 import { columnCount, spawnCoin } from "./GameController";
 
 export class AI {
@@ -7,10 +8,10 @@ export class AI {
         this.columns = document.getElementsByClassName('column');
     }
 
-    public spawnCoin() {
-        let currentColumn = Math.floor(Math.random() * columnCount);
+    public spawnCoin(): CoinList {
+        const currentColumn = Math.floor(Math.random() * columnCount);
 
-        spawnCoin(this.columns[currentColumn] as HTMLElement)
+        return spawnCoin(this.columns[currentColumn] as HTMLElement)
     }
 
     // check for win

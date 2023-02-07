@@ -15,14 +15,15 @@
         if (target.classList.contains("slot")) target = target.parentElement as HTMLElement;
 
         if (target.classList.contains("column") && target.id.startsWith("column")) {
-            const coinList = spawnCoin(target);
+            let coinList = spawnCoin(target);
 
             if (coinList == null) return;
 
-            checkForWin(coinList["children"], coinList["index"]);
+            const won = checkForWin(coinList["children"], coinList["index"]);
 
-            if ($gamemode == "onePlayer") {
-                ai.spawnCoin();
+            if (!won && $gamemode == "onePlayer") {
+                coinList = ai.spawnCoin();
+                checkForWin(coinList["children"], coinList["index"]);
             }
         } else return;
         
