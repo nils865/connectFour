@@ -57,7 +57,7 @@
   <div id="globalHead">
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <img on:click={() => refreshGame()} id="refresh" src="./img/refresh.svg" alt="refresh" draggable="false">
-    <select bind:value={$gamemode} name="mode" id="mode">
+    <select on:change={() => refreshGame()} bind:value={$gamemode} name="mode" id="mode">
       <option value="twoPlayer">2p</option>
       <option value="onePlayer">1p</option>
     </select>
