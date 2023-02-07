@@ -11,10 +11,15 @@ export class AI {
     public spawnCoin(): CoinList {
         const currentColumn = Math.floor(Math.random() * columnCount);
 
-        return spawnCoin(this.columns[currentColumn] as HTMLElement)
+        if (this.isColumnFull(this.columns[currentColumn] as HTMLElement)) return this.spawnCoin();
+        else return spawnCoin(this.columns[currentColumn] as HTMLElement)
     }
 
     // check for win
     // check for defense
     // check for best pos
+
+    private isColumnFull(e: HTMLElement): boolean {
+        return e.children[0].children[0].classList.contains('coin');
+    }
 }
