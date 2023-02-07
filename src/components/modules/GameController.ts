@@ -5,7 +5,7 @@ export const columnCount: number = 7;
 export const rowCount: number = 6;
 
 function getAllCoins(fn: Function) {
-    const elements = document.getElementsByClassName('column');
+    const elements = document.getElementsByClassName("column");
 
     for (let i = 0; i < elements.length; i++) {
         const children = elements[i].children;
@@ -20,61 +20,61 @@ function getAllCoins(fn: Function) {
 
 function switchCoin() {
     let coinState = null;
-    coin.subscribe((value) => coinState = value);
+    coin.subscribe((value) => (coinState = value));
 
-    if (coinState === 'redCoin') {
-        coin.set('yellowCoin');
+    if (coinState === "redCoin") {
+        coin.set("yellowCoin");
     } else {
-        coin.set('redCoin');
+        coin.set("redCoin");
     }
 }
 
 export class Blink {
     public static addShouldBlink(e: HTMLElement) {
-        e.classList.add('shouldBlink');
+        e.classList.add("shouldBlink");
     }
-    
+
     public static removeAllShouldBlink() {
         getAllCoins((e: HTMLElement) => {
-            if (e.classList.contains('shouldBlink')) {
-                e.classList.remove('shouldBlink')
+            if (e.classList.contains("shouldBlink")) {
+                e.classList.remove("shouldBlink");
             }
         });
     }
-    
+
     public static convertAllBlinks() {
         getAllCoins((e: HTMLElement) => {
-            if (e.classList.contains('shouldBlink')) {
-                e.classList.add('blink')
+            if (e.classList.contains("shouldBlink")) {
+                e.classList.add("blink");
             }
         });
-    
+
         this.removeAllShouldBlink();
     }
 }
 
 export function refreshGame() {
     winstate.set(false);
-    coin.set('redCoin');
+    coin.set("redCoin");
     notification.set(`It's <span style="color: red">reds</span> turn`);
-    
+
     getAllCoins((e: HTMLElement) => {
-        e.classList.remove('coin');
-        e.classList.remove('blink');
-        
-        if (e.classList.contains('redCoin')) {
-            e.classList.remove('redCoin');
-        } else if (e.classList.contains('yellowCoin')) {
-            e.classList.remove('yellowCoin');
+        e.classList.remove("coin");
+        e.classList.remove("blink");
+
+        if (e.classList.contains("redCoin")) {
+            e.classList.remove("redCoin");
+        } else if (e.classList.contains("yellowCoin")) {
+            e.classList.remove("yellowCoin");
         }
     });
 }
 
 export function getCoinState(slot: Element): CoinState {
-    if (slot.children[0].classList.contains('redCoin')) {
-        return 'redCoin';
-    } else if (slot.children[0].classList.contains('yellowCoin')) {
-        return 'yellowCoin';
+    if (slot.children[0].classList.contains("redCoin")) {
+        return "redCoin";
+    } else if (slot.children[0].classList.contains("yellowCoin")) {
+        return "yellowCoin";
     }
 
     return null;
@@ -86,18 +86,18 @@ export function spawnCoin(e: HTMLElement): CoinList {
     for (let i = children.length - 1; i >= 0; i--) {
         const child = children[i] as HTMLElement;
 
-        if (child.children[0].classList.contains('coin')) continue;
+        if (child.children[0].classList.contains("coin")) continue;
 
         let currentCoin = null;
-        coin.subscribe((value) => currentCoin = value);
+        coin.subscribe((value) => (currentCoin = value));
 
         child.children[0].classList.add(currentCoin);
-        child.children[0].classList.add('coin');
+        child.children[0].classList.add("coin");
 
         const output = {
             children: children,
-            index: i
-        }
+            index: i,
+        };
 
         switchCoin();
         return output;

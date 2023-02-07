@@ -2,28 +2,28 @@ import { winstate, notification } from "../../stores";
 // import type { CoinState } from "../../types";
 import { Blink, getCoinState, columnCount, rowCount } from "./GameController";
 
-type winOutput = { state: boolean, elements: HTMLElement[] };
-type Pos = { x: number, y: number };
+type winOutput = { state: boolean; elements: HTMLElement[] };
+type Pos = { x: number; y: number };
 
 class Coin {
     private element: HTMLElement;
     private index: number;
     private slotId: number;
-    
+
     public constructor(element: HTMLElement) {
         this.element = element;
         this.calcIndex();
     }
 
-    public getElement() {
+    public get Element() {
         return this.element;
     }
-    
-    public getIndex() {
+
+    public get Index() {
         return this.index;
     }
 
-    public getSlotId() {
+    public get SlotId() {
         return this.slotId;
     }
 
@@ -44,7 +44,7 @@ export class WinDetection {
     private lastCoin: HTMLElement;
 
     public constructor(slot: HTMLElement) {
-        this.output = { state: false, elements: null}
+        this.output = { state: false, elements: null };
         this.lastCoin = slot;
     }
 
@@ -56,10 +56,10 @@ export class WinDetection {
         let count = 0;
 
         // for (let i = index; i < rowCount; i++) {
-            // if (state != getCoinState(coins[i])) break
+        // if (state != getCoinState(coins[i])) break
 
-            // Blink.addShouldBlink(coins[i].children[0] as HTMLElement);
-            // count++;
+        // Blink.addShouldBlink(coins[i].children[0] as HTMLElement);
+        // count++;
         // }
 
         // if (checkForFourInARow(count, state)) return true;
