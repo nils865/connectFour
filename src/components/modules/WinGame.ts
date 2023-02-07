@@ -1,5 +1,5 @@
 import { winstate, notification } from "../../stores";
-// import type { CoinState } from "../../types";
+import type { CoinState } from "../../types";
 import { Blink, getCoinState, columnCount, rowCount } from "./GameController";
 
 type winOutput = { state: boolean; elements: HTMLElement[] };
@@ -8,26 +8,39 @@ type Pos = { x: number; y: number };
 class Coin {
     private element: HTMLElement;
     private index: number;
-    private slotId: number;
+    private columnId: number;
+    private state: CoinState;
 
     public constructor(element: HTMLElement) {
         this.element = element;
+
+        this.columnId = parseInt(
+            this.element.parentElement.id[
+                this.element.parentElement.id.length - 1
+            ]
+        );
+
         this.calcIndex();
+        this.calcState();
     }
 
-    public get Element() {
+    public get Element(): HTMLElement {
         return this.element;
     }
 
-    public get Index() {
+    public get Index(): number {
         return this.index;
     }
 
-    public get SlotId() {
-        return this.slotId;
+    public get SlotId(): number {
+        return this.columnId;
     }
 
-    private calcIndex() {
+    public get State(): CoinState {
+        return this.state;
+    }
+
+    private calcIndex(): void {
         const parent = this.element.parentElement;
 
         for (let i = 0; i < parent.children.length; i++) {
@@ -37,15 +50,23 @@ class Coin {
             }
         }
     }
+
+    private calcState(): void {
+        if (this.element.children[0].classList.contains("yellowCoin"))
+            this.state = "yellowCoin";
+        else if (this.element.children[0].classList.contains("redCoin"))
+            this.state = "redCoin";
+        else this.state = null;
+    }
 }
 
 export class WinDetection {
     private output: winOutput;
-    private lastCoin: HTMLElement;
+    private lastCoin: Coin;
 
     public constructor(slot: HTMLElement) {
         this.output = { state: false, elements: null };
-        this.lastCoin = slot;
+        this.lastCoin = new Coin(slot);
     }
 
     public getWinState(): winOutput {
@@ -54,6 +75,8 @@ export class WinDetection {
 
     private checkColumn() {
         let count = 0;
+
+        for (let i = this.lastCoin.Index; i < rowCount; i++) {}
 
         // for (let i = index; i < rowCount; i++) {
         // if (state != getCoinState(coins[i])) break
