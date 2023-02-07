@@ -5,6 +5,38 @@ import { Blink, getCoinState, columnCount, rowCount } from "./GameController";
 type winOutput = { state: boolean; elements: HTMLElement[] };
 type Pos = { x: number; y: number };
 
+export class WinDetection {
+    private output: winOutput;
+    private lastCoin: Coin;
+
+    public constructor(slot: HTMLElement) {
+        this.output = { state: false, elements: null };
+        this.lastCoin = new Coin(slot);
+    }
+
+    public getWinState(): winOutput {
+        return this.output;
+    }
+
+    private checkColumn() {
+        let count = 0;
+
+        for (let i = this.lastCoin.Index; i < rowCount; i++) {}
+
+        // for (let i = index; i < rowCount; i++) {
+        // if (state != getCoinState(coins[i])) break
+
+        // Blink.addShouldBlink(coins[i].children[0] as HTMLElement);
+        // count++;
+        // }
+
+        // if (checkForFourInARow(count, state)) return true;
+
+        Blink.removeAllShouldBlink();
+        return false;
+    }
+}
+
 class Coin {
     private element: HTMLElement;
     private index: number;
@@ -57,38 +89,6 @@ class Coin {
         else if (this.element.children[0].classList.contains("redCoin"))
             this.state = "redCoin";
         else this.state = null;
-    }
-}
-
-export class WinDetection {
-    private output: winOutput;
-    private lastCoin: Coin;
-
-    public constructor(slot: HTMLElement) {
-        this.output = { state: false, elements: null };
-        this.lastCoin = new Coin(slot);
-    }
-
-    public getWinState(): winOutput {
-        return this.output;
-    }
-
-    private checkColumn() {
-        let count = 0;
-
-        for (let i = this.lastCoin.Index; i < rowCount; i++) {}
-
-        // for (let i = index; i < rowCount; i++) {
-        // if (state != getCoinState(coins[i])) break
-
-        // Blink.addShouldBlink(coins[i].children[0] as HTMLElement);
-        // count++;
-        // }
-
-        // if (checkForFourInARow(count, state)) return true;
-
-        Blink.removeAllShouldBlink();
-        return false;
     }
 }
 
