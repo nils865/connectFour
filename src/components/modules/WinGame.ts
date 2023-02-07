@@ -8,38 +8,42 @@ type Pos = { x: number; y: number };
 export class WinDetection {
     private output: winOutput;
     private lastCoin: Coin;
+    private columns: HTMLCollection;
 
     public constructor(slot: HTMLElement) {
         this.output = { state: false, elements: null };
         this.lastCoin = new Coin(slot);
+        this.columns = document.getElementsByClassName("column");
+
+        const columnList = this.checkColumn();
     }
 
     public getWinState(): winOutput {
         return this.output;
     }
 
-    private checkColumn() {
-        let count = 0;
+    private checkColumn(): HTMLElement[] {
+        let list: HTMLElement[] = [];
 
-        for (let i = this.lastCoin.Index; i < rowCount; i++) {}
+        for (let i = this.lastCoin.SlotId; i < rowCount; i++) {
+            if (
+                this.lastCoin.State !=
+                getCoinState(this.columns[this.lastCoin.ColumnId].children[i])
+            )
+                break;
 
-        // for (let i = index; i < rowCount; i++) {
-        // if (state != getCoinState(coins[i])) break
+            list.push(
+                this.columns[this.lastCoin.ColumnId].children[i] as HTMLElement
+            );
+        }
 
-        // Blink.addShouldBlink(coins[i].children[0] as HTMLElement);
-        // count++;
-        // }
-
-        // if (checkForFourInARow(count, state)) return true;
-
-        Blink.removeAllShouldBlink();
-        return false;
+        return list;
     }
 }
 
 class Coin {
     private element: HTMLElement;
-    private index: number;
+    private slotId: number;
     private columnId: number;
     private state: CoinState;
 
@@ -60,11 +64,11 @@ class Coin {
         return this.element;
     }
 
-    public get Index(): number {
-        return this.index;
+    public get SlotId(): number {
+        return this.slotId;
     }
 
-    public get SlotId(): number {
+    public get ColumnId(): number {
         return this.columnId;
     }
 
@@ -77,7 +81,7 @@ class Coin {
 
         for (let i = 0; i < parent.children.length; i++) {
             if (parent.children[i] == this.element) {
-                this.index = i;
+                this.slotId = i;
                 break;
             }
         }
