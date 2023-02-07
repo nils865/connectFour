@@ -1,7 +1,7 @@
 <script lang="ts">
     import { columnCount, rowCount, spawnCoin } from "./modules/GameController";
     import { notification, winstate, coin, gamemode } from "../stores";
-    import { checkForWin } from "./modules/WinGame";
+    // import { checkForWin } from "./modules/WinGame";
     import { AI } from "./modules/AI";
 
     const ai: AI = new AI();
@@ -19,12 +19,12 @@
 
             if (coinList == null) return;
 
-            const won = checkForWin(coinList["children"], coinList["index"]);
+            // const won = checkForWin(coinList["children"], coinList["index"]);
 
-            if (!won && $gamemode == "onePlayer") {
-                coinList = ai.spawnCoin();
-                checkForWin(coinList["children"], coinList["index"]);
-            }
+            // if (!won && $gamemode == "onePlayer") {
+            //     coinList = ai.spawnCoin();
+            //     checkForWin(coinList["children"], coinList["index"]);
+            // }
         } else return;
         
         if ($winstate) return;

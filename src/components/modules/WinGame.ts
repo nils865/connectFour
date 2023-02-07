@@ -2,101 +2,118 @@ import { winstate, notification } from "../../stores";
 import type { Coin } from "../../types";
 import { Blink, getCoinState, columnCount, rowCount } from "./GameController";
 
-function endGame(team: Coin) {
-    winstate.set(true);
+type winOutput = { state: boolean, elements: HTMLElement[] };
+type Pos = { x: number, y: number };
 
-    if (team === 'redCoin') {
-        notification.set(`<span style="color: red">Red</span> won!`);
-    } else {
-        notification.set(`<span style="color: yellow">Yellow</span> won!`);
+export class WinDetection {
+    private output: winOutput;
+    private lastCoin: HTMLElement;
+
+    public constructor(slot: HTMLElement) {
+        this.output = { state: false, elements: null}
+        this.lastCoin = slot;
+    }
+
+    public getWinState(): winOutput {
+        return this.output;
     }
 }
 
-function checkForFourInARow(count: number, state: Coin): boolean {
-    if (count >= 4) {
-        endGame(state);
-        Blink.convertAllBlinks();
-        return true;
-    }
+// function endGame(team: Coin) {
+//     winstate.set(true);
 
-    return false;
-}
+//     if (team === 'redCoin') {
+//         notification.set(`<span style="color: red">Red</span> won!`);
+//     } else {
+//         notification.set(`<span style="color: yellow">Yellow</span> won!`);
+//     }
+// }
 
-type Pos = { x: number, y: number }
+// function checkForFourInARow(count: number, state: Coin): boolean {
+//     if (count >= 4) {
+//         endGame(state);
+//         Blink.convertAllBlinks();
+//         return true;
+//     }
 
-const getColumnId = (slot: HTMLElement):number => parseInt(slot.parentElement.id[slot.parentElement.id.length - 1]);
-const getSlot = (pos: Pos): HTMLElement => document.getElementsByClassName('column')[pos.x].children[pos.y] as HTMLElement;
-const verifySlotPos = (pos: Pos): boolean => pos.x < columnCount && pos.x >= 0 && pos.y < rowCount && pos.y >= 0;
+//     return false;
+// }
 
-function checkColumn(coins: HTMLCollection, state: Coin, index: number): boolean {
-    let count = 0;
+// type Pos = { x: number, y: number }
 
-    for (let i = index; i < rowCount; i++) {
-        if (state != getCoinState(coins[i])) break
+// const getColumnId = (slot: HTMLElement):number => parseInt(slot.parentElement.id[slot.parentElement.id.length - 1]);
+// const getSlot = (pos: Pos): HTMLElement => document.getElementsByClassName('column')[pos.x].children[pos.y] as HTMLElement;
+// const verifySlotPos = (pos: Pos): boolean => pos.x < columnCount && pos.x >= 0 && pos.y < rowCount && pos.y >= 0;
 
-        Blink.addShouldBlink(coins[i].children[0] as HTMLElement);
-        count++;
-    }
+// function checkColumn(coins: HTMLCollection, state: Coin, index: number): boolean {
+//     let count = 0;
 
-    if (checkForFourInARow(count, state)) return true;
+//     for (let i = index; i < rowCount; i++) {
+//         if (state != getCoinState(coins[i])) break
 
-    Blink.removeAllShouldBlink();
-    return false;
-}
+//         Blink.addShouldBlink(coins[i].children[0] as HTMLElement);
+//         count++;
+//     }
 
-function checkRow(coins: HTMLCollection, state: Coin, index: number): boolean {
-    // get starting pos
-    let startPos: number = -1;
-    for (let i = getColumnId(coins[index] as HTMLElement); i >= 0 && startPos < 0; i--) {
-        if (state != getCoinState(getSlot({ x: i, y: index }))) startPos = i;
-    }
-    startPos++;
+//     if (checkForFourInARow(count, state)) return true;
 
-    // get row
-    let count = 0;
-    for (let i = startPos; i < columnCount && (state === getCoinState(getSlot({ x: i, y: index }))); i++) {
-        Blink.addShouldBlink(getSlot({ x: i, y: index }).children[0] as HTMLElement);
-        count++;
-    }
+//     Blink.removeAllShouldBlink();
+//     return false;
+// }
 
-    if (checkForFourInARow(count, state)) return true;
+// function checkRow(coins: HTMLCollection, state: Coin, index: number): boolean {
+//     // get starting pos
+//     let startPos: number = -1;
+//     for (let i = getColumnId(coins[index] as HTMLElement); i >= 0 && startPos < 0; i--) {
+//         if (state != getCoinState(getSlot({ x: i, y: index }))) startPos = i;
+//     }
+//     startPos++;
 
-    Blink.removeAllShouldBlink();
-    return false;
-}
+//     // get row
+//     let count = 0;
+//     for (let i = startPos; i < columnCount && (state === getCoinState(getSlot({ x: i, y: index }))); i++) {
+//         Blink.addShouldBlink(getSlot({ x: i, y: index }).children[0] as HTMLElement);
+//         count++;
+//     }
 
-function checkDiagonal(coins: HTMLCollection, state: Coin, index: number, getNextElementPos: Function, getPrevElementPos: Function): boolean {
-    // get startPos
-    const newestPos: Pos = { x: getColumnId(coins[index] as HTMLElement), y: index };
+//     if (checkForFourInARow(count, state)) return true;
 
-    let startPos: Pos = getNextElementPos(newestPos);
-    while (verifySlotPos(getPrevElementPos(startPos)) && getCoinState(getSlot(getPrevElementPos(startPos))) === state) {
-        startPos = getPrevElementPos(startPos);
-    }
+//     Blink.removeAllShouldBlink();
+//     return false;
+// }
 
-    // calculate diagonal
-    let currentPos: Pos = getPrevElementPos(startPos);
-    let count = 0;
-    while (verifySlotPos(getNextElementPos(currentPos)) && getCoinState(getSlot(getNextElementPos(currentPos))) == state) {
-        currentPos = getNextElementPos(currentPos);
-        Blink.addShouldBlink(getSlot(currentPos).children[0] as HTMLElement);
-        count++;
-    }
+// function checkDiagonal(coins: HTMLCollection, state: Coin, index: number, getNextElementPos: Function, getPrevElementPos: Function): boolean {
+//     // get startPos
+//     const newestPos: Pos = { x: getColumnId(coins[index] as HTMLElement), y: index };
 
-    if (checkForFourInARow(count, state)) return true;
+//     let startPos: Pos = getNextElementPos(newestPos);
+//     while (verifySlotPos(getPrevElementPos(startPos)) && getCoinState(getSlot(getPrevElementPos(startPos))) === state) {
+//         startPos = getPrevElementPos(startPos);
+//     }
 
-    Blink.removeAllShouldBlink();
-    return false;
-}
+//     // calculate diagonal
+//     let currentPos: Pos = getPrevElementPos(startPos);
+//     let count = 0;
+//     while (verifySlotPos(getNextElementPos(currentPos)) && getCoinState(getSlot(getNextElementPos(currentPos))) == state) {
+//         currentPos = getNextElementPos(currentPos);
+//         Blink.addShouldBlink(getSlot(currentPos).children[0] as HTMLElement);
+//         count++;
+//     }
 
-export function checkForWin(coins: HTMLCollection, index: number): boolean {
-    const state: Coin = getCoinState(coins[index]);
-    let win: boolean = false;
+//     if (checkForFourInARow(count, state)) return true;
 
-    if (checkColumn(coins, state, index)) win = true;
-    if (checkRow(coins, state, index)) win = true;
-    if (checkDiagonal(coins, state, index, (pos: Pos): Pos => ({ x: pos.x + 1, y: pos.y - 1 }), (pos: Pos): Pos => ({ x: pos.x - 1, y: pos.y + 1 }))) win = true;
-    if (checkDiagonal(coins, state, index, (pos: Pos): Pos => ({ x: pos.x - 1, y: pos.y - 1 }), (pos: Pos): Pos => ({ x: pos.x + 1, y: pos.y + 1 }))) win = true;
+//     Blink.removeAllShouldBlink();
+//     return false;
+// }
 
-    return win;
-}
+// export function checkForWin(coins: HTMLCollection, index: number): boolean {
+//     const state: Coin = getCoinState(coins[index]);
+//     let win: boolean = false;
+
+//     if (checkColumn(coins, state, index)) win = true;
+//     if (checkRow(coins, state, index)) win = true;
+//     if (checkDiagonal(coins, state, index, (pos: Pos): Pos => ({ x: pos.x + 1, y: pos.y - 1 }), (pos: Pos): Pos => ({ x: pos.x - 1, y: pos.y + 1 }))) win = true;
+//     if (checkDiagonal(coins, state, index, (pos: Pos): Pos => ({ x: pos.x - 1, y: pos.y - 1 }), (pos: Pos): Pos => ({ x: pos.x + 1, y: pos.y + 1 }))) win = true;
+
+//     return win;
+// }
