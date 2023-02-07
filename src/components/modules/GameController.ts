@@ -1,5 +1,5 @@
 import { notification, winstate, coin } from "../../stores";
-import type { Coin, CoinList } from "../../types";
+import type { CoinState, CoinList } from "../../types";
 
 export const columnCount: number = 7;
 export const rowCount: number = 6;
@@ -70,7 +70,7 @@ export function refreshGame() {
     });
 }
 
-export function getCoinState(slot: Element): Coin {
+export function getCoinState(slot: Element): CoinState {
     if (slot.children[0].classList.contains('redCoin')) {
         return 'redCoin';
     } else if (slot.children[0].classList.contains('yellowCoin')) {
