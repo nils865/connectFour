@@ -16,6 +16,7 @@ export class WinDetection {
         this.columns = document.getElementsByClassName("column");
 
         const columnList = this.checkColumn();
+        const rowList = this.checkRow();
     }
 
     public getWinState(): winOutput {
@@ -39,7 +40,43 @@ export class WinDetection {
 
         return list;
     }
+
+    private checkRow(): HTMLElement[] {
+        let list: HTMLElement[] = [];
+
+        // get starting pos
+        let startPos = -1;
+        for (let i = this.lastCoin.ColumnId; i >= 0 && startPos < 0; i--) {
+            if (
+                this.lastCoin.State !=
+                getCoinState(getSlot({ x: i, y: this.lastCoin.SlotId }))
+            )
+                startPos = i;
+        }
+        startPos++;
+
+        // get row
+        for (
+            let i = startPos;
+            i < columnCount &&
+            this.lastCoin.State ===
+                getCoinState(getSlot({ x: i, y: this.lastCoin.SlotId }));
+            i++
+        ) {
+            list.push(
+                getSlot({ x: i, y: this.lastCoin.SlotId })
+                    .children[0] as HTMLElement
+            );
+        }
+
+        return list;
+    }
 }
+
+const getSlot = (pos: Pos): HTMLElement =>
+    document.getElementsByClassName("column")[pos.x].children[
+        pos.y
+    ] as HTMLElement;
 
 class Coin {
     private element: HTMLElement;
@@ -56,7 +93,7 @@ class Coin {
             ]
         );
 
-        this.calcIndex();
+        this.calcSlotId();
         this.calcState();
     }
 
@@ -76,7 +113,7 @@ class Coin {
         return this.state;
     }
 
-    private calcIndex(): void {
+    private calcSlotId(): void {
         const parent = this.element.parentElement;
 
         for (let i = 0; i < parent.children.length; i++) {
