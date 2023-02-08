@@ -92,7 +92,7 @@ export class WinDetection {
             )
                 break;
 
-            list.push(getSlot({ x: this.lastCoin.ColumnId, y: i }));
+            list.push(this.getSlot({ x: this.lastCoin.ColumnId, y: i }));
         }
 
         return list;
@@ -106,7 +106,7 @@ export class WinDetection {
         for (let i = this.lastCoin.ColumnId; i >= 0 && startPos < 0; i--) {
             if (
                 this.lastCoin.State !=
-                getCoinState(getSlot({ x: i, y: this.lastCoin.SlotId }))
+                getCoinState(this.getSlot({ x: i, y: this.lastCoin.SlotId }))
             )
                 startPos = i;
         }
@@ -117,10 +117,10 @@ export class WinDetection {
             let i = startPos;
             i < columnCount &&
             this.lastCoin.State ===
-                getCoinState(getSlot({ x: i, y: this.lastCoin.SlotId }));
+                getCoinState(this.getSlot({ x: i, y: this.lastCoin.SlotId }));
             i++
         ) {
-            list.push(getSlot({ x: i, y: this.lastCoin.SlotId }));
+            list.push(this.getSlot({ x: i, y: this.lastCoin.SlotId }));
         }
 
         return list;
@@ -140,7 +140,7 @@ export class WinDetection {
         let startPos: Pos = getNextElementPos(newestPos);
         while (
             verifySlotPos(getPrevElementPos(startPos)) &&
-            getCoinState(getSlot(getPrevElementPos(startPos))) ===
+            getCoinState(this.getSlot(getPrevElementPos(startPos))) ===
                 this.lastCoin.State
         ) {
             startPos = getPrevElementPos(startPos);
@@ -149,21 +149,20 @@ export class WinDetection {
         let currentPos: Pos = getPrevElementPos(startPos);
         while (
             verifySlotPos(getNextElementPos(currentPos)) &&
-            getCoinState(getSlot(getNextElementPos(currentPos))) ==
+            getCoinState(this.getSlot(getNextElementPos(currentPos))) ==
                 this.lastCoin.State
         ) {
             currentPos = getNextElementPos(currentPos);
-            list.push(getSlot(currentPos));
+            list.push(this.getSlot(currentPos));
         }
 
         return list;
     }
-}
 
-const getSlot = (pos: Pos): HTMLElement =>
-    document.getElementsByClassName("column")[pos.x].children[
-        pos.y
-    ] as HTMLElement;
+    private getSlot(pos: Pos) {
+        return this.columns[pos.x].children[pos.y] as HTMLElement;
+    }
+}
 
 const verifySlotPos = (pos: Pos): boolean =>
     pos.x < columnCount && pos.x >= 0 && pos.y < rowCount && pos.y >= 0;
