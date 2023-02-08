@@ -8,31 +8,31 @@ export function checkForWin(coinList: CoinList) {
     const winDetection = new WinDetection(
         coinList["children"][coinList["index"]] as HTMLElement
     );
-    const won = winDetection.WinState["state"];
+    const winArgs = winDetection.WinState;
 
-    if (won) {
+    if (winArgs["state"]) {
         winstate.set(true);
         winDetection.addBlink();
-        coin.subscribe((e) => {
-            if (e === "redCoin")
-                notification.set('<span style="color: red">Red</span> won!');
-            else if (e === "yellowCoin")
-                notification.set(
-                    '<span style="color: yellow">Yellow</span> won!'
-                );
-        });
+        if (winArgs["winner"] === "redCoin")
+            notification.set('<span style="color: red">Red</span> won!');
+        else if (winArgs["winner"] === "yellowCoin")
+            notification.set('<span style="color: yellow">Yellow</span> won!');
     }
 
     return winDetection.WinState;
 }
 
 export class WinDetection {
-    private output: { state: boolean; elements: HTMLElement[] };
+    private output: {
+        state: boolean;
+        elements: HTMLElement[];
+        winner: CoinState;
+    };
     private lastCoin: Coin;
     private columns: HTMLCollection;
 
     public constructor(slot: HTMLElement) {
-        this.output = { state: false, elements: [] };
+        this.output = { state: false, elements: [], winner: null };
         this.lastCoin = new Coin(slot);
         this.columns = document.getElementsByClassName("column");
 
@@ -52,6 +52,7 @@ export class WinDetection {
         lists.forEach((e) => {
             if (e.length >= 4) {
                 this.output["state"] = true;
+                this.output["winner"] = this.lastCoin.State;
                 e.forEach((c) => {
                     if (!this.output["elements"].includes(c))
                         this.output["elements"].push(c);
