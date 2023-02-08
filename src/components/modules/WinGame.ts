@@ -36,13 +36,14 @@ export class WinDetection {
     };
     private lastCoin: Coin;
     private columns: HTMLCollection;
+    private connectedElements: HTMLElement[][];
 
     public constructor(slot: HTMLElement, gamefield: HTMLCollection) {
         this.output = { state: false, elements: [], winner: null };
         this.lastCoin = new Coin(slot);
         this.columns = gamefield;
 
-        const lists: HTMLElement[][] = [
+        this.connectedElements = [
             this.checkColumn(),
             this.checkRow(),
             this.checkDiagonal(
@@ -55,7 +56,7 @@ export class WinDetection {
             ),
         ];
 
-        lists.forEach((e) => {
+        this.connectedElements.forEach((e) => {
             if (e.length >= 4) {
                 this.output["state"] = true;
                 this.output["winner"] = this.lastCoin.State;
@@ -75,6 +76,10 @@ export class WinDetection {
 
     public get WinState() {
         return this.output;
+    }
+
+    public get ConnectedElements() {
+        return this.connectedElements;
     }
 
     private checkColumn(): HTMLElement[] {
