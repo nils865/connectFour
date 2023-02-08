@@ -29,30 +29,6 @@ function switchCoin() {
     }
 }
 
-export class Blink {
-    public static addShouldBlink(e: HTMLElement) {
-        e.classList.add("shouldBlink");
-    }
-
-    public static removeAllShouldBlink() {
-        getAllCoins((e: HTMLElement) => {
-            if (e.classList.contains("shouldBlink")) {
-                e.classList.remove("shouldBlink");
-            }
-        });
-    }
-
-    public static convertAllBlinks() {
-        getAllCoins((e: HTMLElement) => {
-            if (e.classList.contains("shouldBlink")) {
-                e.classList.add("blink");
-            }
-        });
-
-        this.removeAllShouldBlink();
-    }
-}
-
 export function refreshGame() {
     winstate.set(false);
     coin.set("redCoin");
