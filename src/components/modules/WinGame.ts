@@ -32,7 +32,8 @@ export class WinDetection {
             if (e.length >= 4) {
                 this.output["state"] = true;
                 e.forEach((c) => {
-                    this.output["elements"].push(c);
+                    if (!this.output["elements"].includes(c))
+                        this.output["elements"].push(c);
                 });
             }
         });
@@ -82,10 +83,7 @@ export class WinDetection {
                 getCoinState(getSlot({ x: i, y: this.lastCoin.SlotId }));
             i++
         ) {
-            list.push(
-                getSlot({ x: i, y: this.lastCoin.SlotId })
-                    .children[0] as HTMLElement
-            );
+            list.push(getSlot({ x: i, y: this.lastCoin.SlotId }));
         }
 
         return list;
