@@ -1,4 +1,4 @@
-import type { CoinList } from "../../types";
+import type { CoinList, CoinState } from "../../types";
 import {
     columnCount,
     getGamefield,
@@ -15,11 +15,11 @@ export class AI {
     }
 
     public spawnCoin(): CoinList {
-        const defense = this.checkForDefense();
+        const attack = this.checkForWin("yellowCoin");
+        if (attack != null) return attack;
 
-        if (defense > -1) {
-            return spawnCoin(this.columns[defense] as HTMLElement);
-        }
+        const defend = this.checkForWin("redCoin");
+        if (defend != null) return defend;
 
         const currentColumn = Math.floor(Math.random() * columnCount);
 
@@ -28,11 +28,9 @@ export class AI {
         else return spawnCoin(this.columns[currentColumn] as HTMLElement);
     }
 
-    // check for win
-    // check for defense
-    private checkForDefense() {
+    private checkForWin(team: CoinState) {
         for (let i = 0; i < columnCount; i++) {
-            const currentGamefield = this.generateGamefield(i);
+            const currentGamefield = this.generateGamefield(i, team);
             if (currentGamefield === null) continue;
 
             const winDetection = new WinDetection(
@@ -41,15 +39,15 @@ export class AI {
             );
 
             if (winDetection.WinState["state"]) {
-                return i;
+                return spawnCoin(this.columns[i] as HTMLElement);
             }
         }
 
-        return -1;
+        return null;
     }
     // check for best pos
 
-    private generateGamefield(pos: number) {
+    private generateGamefield(pos: number, team: CoinState) {
         const gamefield = getGamefield();
 
         let top = -1;
@@ -67,7 +65,7 @@ export class AI {
 
         gamefield[pos].children[top].children[0].classList.add(
             "coin",
-            "redCoin"
+            `${team}`
         );
 
         return {
