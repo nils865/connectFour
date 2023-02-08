@@ -1,9 +1,7 @@
 <script lang="ts">
   import { refreshGame } from "./components/modules/GameController";
-  import type { Mode } from "./types";
+  import { gamemode } from "./stores"
   import Game from "./components/Game.svelte";
-  
-  let mode: Mode = "twoPlayer";
 </script>
 
 <style>
@@ -59,15 +57,10 @@
   <div id="globalHead">
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <img on:click={() => refreshGame()} id="refresh" src="./img/refresh.svg" alt="refresh" draggable="false">
-    <select bind:value={mode} name="mode" id="mode">
+    <select on:change={() => refreshGame()} bind:value={$gamemode} name="mode" id="mode">
       <option value="twoPlayer">2p</option>
       <option value="onePlayer">1p</option>
     </select>
   </div>
-  {#if mode === "twoPlayer"}
     <Game />
-  {/if}
-  {#if mode === "onePlayer"}
-    <h1>W.I.P.</h1>
-  {/if}
 </div>

@@ -1,7 +1,10 @@
 <script lang="ts">
-    import { Blink, columnCount, rowCount, spawnCoin } from "./modules/GameController";
-    import { notification, winstate, coin } from "../stores";
+    import { columnCount, rowCount, spawnCoin } from "./modules/GameController";
+    import { notification, winstate, coin, gamemode } from "../stores";
+    import { AI } from "./modules/AI";
     import { checkForWin } from "./modules/WinGame";
+
+    const ai: AI = new AI();
 
     function click(e: MouseEvent) {
         if ($winstate) return;
@@ -16,19 +19,16 @@
 
             if (coinList == null) return;
 
-            checkForWin(coinList["children"], coinList["index"]);
-        } else {
-            return;
-        }
+            const winArgs = checkForWin(coinList);
 
+            if (!winArgs["state"] && $gamemode == "onePlayer") {
+                checkForWin(ai.spawnCoin());
+            }
+        } else return;
         
-        if ($winstate) {
-            return;
-        } else if ($coin == 'redCoin') {
-            $notification = `It's <span style="color: red">reds</span> turn`
-        } else if ($coin == 'yellowCoin') {
-            $notification = `It's <span style="color: yellow">yellows</span> turn`;
-        }
+        if ($winstate) return;
+        else if ($coin == 'redCoin') $notification = `It's <span style="color: red">reds</span> turn`
+        else if ($coin == 'yellowCoin') $notification = `It's <span style="color: yellow">yellows</span> turn`;
     }
 </script>
 
