@@ -21,6 +21,7 @@
             if (coinList == null) return;
 
             const winDetection = new WinDetection(coinList["children"][coinList["index"]] as HTMLElement);
+            console.log(winDetection.getWinState())
 
             // const won = checkForWin(coinList["children"], coinList["index"]);
 

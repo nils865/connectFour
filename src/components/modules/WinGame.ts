@@ -11,40 +11,31 @@ export class WinDetection {
     private columns: HTMLCollection;
 
     public constructor(slot: HTMLElement) {
-        this.output = { state: false, elements: null };
+        this.output = { state: false, elements: [] };
         this.lastCoin = new Coin(slot);
         this.columns = document.getElementsByClassName("column");
 
-        const columnList = this.checkColumn();
-        const rowList = this.checkRow();
-        const diagOne = this.checkDiagonal(
-            (pos: Pos): Pos => ({ x: pos.x + 1, y: pos.y - 1 }),
-            (pos: Pos): Pos => ({ x: pos.x - 1, y: pos.y + 1 })
-        );
-        const diagTwo = this.checkDiagonal(
-            (pos: Pos): Pos => ({ x: pos.x - 1, y: pos.y - 1 }),
-            (pos: Pos): Pos => ({ x: pos.x + 1, y: pos.y + 1 })
-        );
+        const lists: HTMLElement[][] = [
+            this.checkColumn(),
+            this.checkRow(),
+            this.checkDiagonal(
+                (pos: Pos): Pos => ({ x: pos.x + 1, y: pos.y - 1 }),
+                (pos: Pos): Pos => ({ x: pos.x - 1, y: pos.y + 1 })
+            ),
+            this.checkDiagonal(
+                (pos: Pos): Pos => ({ x: pos.x - 1, y: pos.y - 1 }),
+                (pos: Pos): Pos => ({ x: pos.x + 1, y: pos.y + 1 })
+            ),
+        ];
 
-        if (
-            columnList.length >= 4 ||
-            rowList.length >= 4 ||
-            diagOne.length >= 4 ||
-            diagTwo.length >= 4
-        )
-            this.output["state"] = true;
-
-        console.log(`Column`);
-        console.log(columnList);
-
-        console.log(`Row`);
-        console.log(rowList);
-
-        console.log(`Diag 1`);
-        console.log(diagOne);
-
-        console.log(`Diag 2`);
-        console.log(diagTwo);
+        lists.forEach((e) => {
+            if (e.length >= 4) {
+                this.output["state"] = true;
+                e.forEach((c) => {
+                    this.output["elements"].push(c);
+                });
+            }
+        });
     }
 
     public getWinState(): winOutput {
@@ -121,7 +112,6 @@ export class WinDetection {
         }
 
         let currentPos: Pos = getPrevElementPos(startPos);
-        console.table(currentPos);
         while (
             verifySlotPos(getNextElementPos(currentPos)) &&
             getCoinState(getSlot(getNextElementPos(currentPos))) ==
