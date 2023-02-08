@@ -39,7 +39,7 @@ export function getGamefield() {
         }
     }
 
-    return gamefield;
+    return gamefield.children;
 }
 
 export function getAllCoins(fn: Function) {
