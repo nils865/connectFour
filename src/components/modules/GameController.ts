@@ -4,6 +4,44 @@ import type { CoinState, CoinList } from "../../types";
 export const columnCount: number = 7;
 export const rowCount: number = 6;
 
+export function getGamefield() {
+    const gamefield = document.createElement("div");
+
+    for (let i = 0; i < columnCount; i++) {
+        const column = document.createElement("div");
+        column.classList.add("column");
+        column.id = `column${i}`;
+
+        gamefield.appendChild(column);
+    }
+
+    const columns = document.getElementsByClassName("column");
+
+    for (let i = 0; i < columns.length; i++) {
+        for (let j = 0; j < columns[i].children.length; j++) {
+            // const slot = columns[i].children[j] as HTMLElement;
+
+            const slot = document.createElement("div");
+            slot.classList.add("slot");
+
+            const coin = document.createElement("div");
+
+            if (getCoinState(columns[i].children[j]) != null) {
+                coin.classList.add(
+                    "coin",
+                    `${getCoinState(columns[i].children[j])}`
+                );
+            }
+
+            slot.appendChild(coin);
+
+            gamefield.children[i].appendChild(slot);
+        }
+    }
+
+    return gamefield;
+}
+
 export function getAllCoins(fn: Function) {
     const elements = document.getElementsByClassName("column");
 
