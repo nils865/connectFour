@@ -4,7 +4,7 @@ import type { CoinState, CoinList } from "../../types";
 export const columnCount: number = 7;
 export const rowCount: number = 6;
 
-function getAllCoins(fn: Function) {
+export function getAllCoins(fn: Function) {
     const elements = document.getElementsByClassName("column");
 
     for (let i = 0; i < elements.length; i++) {
@@ -18,7 +18,11 @@ function getAllCoins(fn: Function) {
     }
 }
 
-function switchCoin() {
+export function isColumnFull(e: HTMLElement): boolean {
+    return e.children[0].children[0].classList.contains("coin");
+}
+
+export function switchCoin() {
     let coinState = null;
     coin.subscribe((value) => (coinState = value));
 

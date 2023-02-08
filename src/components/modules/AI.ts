@@ -1,5 +1,5 @@
 import type { CoinList } from "../../types";
-import { columnCount, spawnCoin } from "./GameController";
+import { columnCount, isColumnFull, spawnCoin } from "./GameController";
 
 export class AI {
     private columns: HTMLCollection;
@@ -11,7 +11,7 @@ export class AI {
     public spawnCoin(): CoinList {
         const currentColumn = Math.floor(Math.random() * columnCount);
 
-        if (this.isColumnFull(this.columns[currentColumn] as HTMLElement))
+        if (isColumnFull(this.columns[currentColumn] as HTMLElement))
             return this.spawnCoin();
         else return spawnCoin(this.columns[currentColumn] as HTMLElement);
     }
@@ -20,7 +20,5 @@ export class AI {
     // check for defense
     // check for best pos
 
-    private isColumnFull(e: HTMLElement): boolean {
-        return e.children[0].children[0].classList.contains("coin");
-    }
+    
 }

@@ -20,15 +20,12 @@
             if (coinList == null) return;
 
             const winDetection = new WinDetection(coinList["children"][coinList["index"]] as HTMLElement);
-            const won = winDetection.WinState;
+            const won = winDetection.WinState["state"];
             if (won) winDetection.addBlink();
 
-            // const won = checkForWin(coinList["children"], coinList["index"]);
-
-            // if (!won && $gamemode == "onePlayer") {
-            //     coinList = ai.spawnCoin();
-            //     checkForWin(coinList["children"], coinList["index"]);
-            // }
+            if (!won && $gamemode == "onePlayer") {
+                coinList = ai.spawnCoin();
+            }
         } else return;
         
         if ($winstate) return;
