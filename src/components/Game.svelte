@@ -3,6 +3,7 @@
     import { notification, winstate, coin, gamemode } from "../stores";
     // import { checkForWin } from "./modules/WinGame";
     import { AI } from "./modules/AI";
+    import { WinDetection } from "./modules/WinGame";
 
     const ai: AI = new AI();
 
@@ -18,6 +19,8 @@
             let coinList = spawnCoin(target);
 
             if (coinList == null) return;
+
+            const winDetection = new WinDetection(coinList["children"][coinList["index"]] as HTMLElement);
 
             // const won = checkForWin(coinList["children"], coinList["index"]);
 
