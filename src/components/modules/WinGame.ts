@@ -45,7 +45,7 @@ export class WinDetection {
         });
     }
 
-    public getWinState(): winOutput {
+    public get WinState(): winOutput {
         return this.output;
     }
 
