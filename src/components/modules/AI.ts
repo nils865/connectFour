@@ -15,13 +15,17 @@ export class AI {
     }
 
     public spawnCoin(): CoinList {
-        if (!this.checkForDefense()) {
-            const currentColumn = Math.floor(Math.random() * columnCount);
+        const defense = this.checkForDefense();
 
-            if (isColumnFull(this.columns[currentColumn] as HTMLElement))
-                return this.spawnCoin();
-            else return spawnCoin(this.columns[currentColumn] as HTMLElement);
+        if (defense > -1) {
+            return spawnCoin(this.columns[defense] as HTMLElement);
         }
+
+        const currentColumn = Math.floor(Math.random() * columnCount);
+
+        if (isColumnFull(this.columns[currentColumn] as HTMLElement))
+            return this.spawnCoin();
+        else return spawnCoin(this.columns[currentColumn] as HTMLElement);
     }
 
     // check for win
@@ -37,12 +41,11 @@ export class AI {
             );
 
             if (winDetection.WinState["state"]) {
-                spawnCoin(this.columns[i] as HTMLElement);
-                return true;
+                return i;
             }
         }
 
-        return false;
+        return -1;
     }
     // check for best pos
 
