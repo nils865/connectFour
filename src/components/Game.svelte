@@ -2,7 +2,7 @@
     import { columnCount, rowCount, spawnCoin } from "./modules/GameController";
     import { notification, winstate, coin, gamemode } from "../stores";
     import { AI } from "./modules/AI";
-    import { checkForWin, WinDetection } from "./modules/WinGame";
+    import { checkForWin } from "./modules/WinGame";
 
     const ai: AI = new AI();
 

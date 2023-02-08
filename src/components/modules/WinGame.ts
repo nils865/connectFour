@@ -1,4 +1,4 @@
-import { winstate, notification, coin } from "../../stores";
+import { winstate, notification } from "../../stores";
 import type { CoinList, CoinState } from "../../types";
 import { getCoinState, columnCount, rowCount } from "./GameController";
 
