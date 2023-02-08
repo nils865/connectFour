@@ -1,4 +1,4 @@
-import { winstate, notification } from "../../stores";
+import { winstate, notification, coin } from "../../stores";
 import type { CoinList, CoinState } from "../../types";
 import { getCoinState, columnCount, rowCount } from "./GameController";
 
@@ -10,7 +10,18 @@ export function checkForWin(coinList: CoinList) {
     );
     const won = winDetection.WinState["state"];
 
-    if (won) winDetection.addBlink();
+    if (won) {
+        winstate.set(true);
+        winDetection.addBlink();
+        coin.subscribe((e) => {
+            if (e === "redCoin")
+                notification.set('<span style="color: red">Red</span> won!');
+            else if (e === "yellowCoin")
+                notification.set(
+                    '<span style="color: yellow">Yellow</span> won!'
+                );
+        });
+    }
 
     return winDetection.WinState;
 }

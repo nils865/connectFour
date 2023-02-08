@@ -2,7 +2,7 @@
     import { columnCount, rowCount, spawnCoin } from "./modules/GameController";
     import { notification, winstate, coin, gamemode } from "../stores";
     import { AI } from "./modules/AI";
-    import { WinDetection } from "./modules/WinGame";
+    import { checkForWin, WinDetection } from "./modules/WinGame";
 
     const ai: AI = new AI();
 
@@ -19,11 +19,9 @@
 
             if (coinList == null) return;
 
-            const winDetection = new WinDetection(coinList["children"][coinList["index"]] as HTMLElement);
-            const won = winDetection.WinState["state"];
-            if (won) winDetection.addBlink();
+            const winArgs = checkForWin(coinList);
 
-            if (!won && $gamemode == "onePlayer") {
+            if (!winArgs["state"] && $gamemode == "onePlayer") {
                 coinList = ai.spawnCoin();
             }
         } else return;
