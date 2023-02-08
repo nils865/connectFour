@@ -1,12 +1,18 @@
 import { winstate, notification } from "../../stores";
 import type { CoinList, CoinState } from "../../types";
-import { getCoinState, columnCount, rowCount } from "./GameController";
+import {
+    getCoinState,
+    columnCount,
+    rowCount,
+    getGamefield,
+} from "./GameController";
 
 type Pos = { x: number; y: number };
 
 export function checkForWin(coinList: CoinList) {
     const winDetection = new WinDetection(
-        coinList["children"][coinList["index"]] as HTMLElement
+        coinList["children"][coinList["index"]] as HTMLElement,
+        getGamefield()
     );
     const winArgs = winDetection.WinState;
 
@@ -31,10 +37,10 @@ export class WinDetection {
     private lastCoin: Coin;
     private columns: HTMLCollection;
 
-    public constructor(slot: HTMLElement) {
+    public constructor(slot: HTMLElement, gamefield: HTMLCollection) {
         this.output = { state: false, elements: [], winner: null };
         this.lastCoin = new Coin(slot);
-        this.columns = document.getElementsByClassName("column");
+        this.columns = gamefield;
 
         const lists: HTMLElement[][] = [
             this.checkColumn(),
@@ -81,9 +87,7 @@ export class WinDetection {
             )
                 break;
 
-            list.push(
-                this.columns[this.lastCoin.ColumnId].children[i] as HTMLElement
-            );
+            list.push(getSlot({ x: this.lastCoin.ColumnId, y: i }));
         }
 
         return list;

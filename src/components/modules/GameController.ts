@@ -19,8 +19,6 @@ export function getGamefield() {
 
     for (let i = 0; i < columns.length; i++) {
         for (let j = 0; j < columns[i].children.length; j++) {
-            // const slot = columns[i].children[j] as HTMLElement;
-
             const slot = document.createElement("div");
             slot.classList.add("slot");
 
