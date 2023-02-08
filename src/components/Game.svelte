@@ -1,7 +1,6 @@
 <script lang="ts">
     import { columnCount, rowCount, spawnCoin } from "./modules/GameController";
     import { notification, winstate, coin, gamemode } from "../stores";
-    // import { checkForWin } from "./modules/WinGame";
     import { AI } from "./modules/AI";
     import { WinDetection } from "./modules/WinGame";
 
