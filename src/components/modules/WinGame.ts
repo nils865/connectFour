@@ -1,12 +1,22 @@
 import { winstate, notification } from "../../stores";
-import type { CoinState } from "../../types";
+import type { CoinList, CoinState } from "../../types";
 import { getCoinState, columnCount, rowCount } from "./GameController";
 
-type winOutput = { state: boolean; elements: HTMLElement[] };
 type Pos = { x: number; y: number };
 
+export function checkForWin(coinList: CoinList) {
+    const winDetection = new WinDetection(
+        coinList["children"][coinList["index"]] as HTMLElement
+    );
+    const won = winDetection.WinState["state"];
+
+    if (won) winDetection.addBlink();
+
+    return winDetection.WinState;
+}
+
 export class WinDetection {
-    private output: winOutput;
+    private output: { state: boolean; elements: HTMLElement[] };
     private lastCoin: Coin;
     private columns: HTMLCollection;
 
@@ -45,7 +55,7 @@ export class WinDetection {
         });
     }
 
-    public get WinState(): winOutput {
+    public get WinState() {
         return this.output;
     }
 

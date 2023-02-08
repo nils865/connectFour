@@ -19,6 +19,4 @@ export class AI {
     // check for win
     // check for defense
     // check for best pos
-
-    
 }
