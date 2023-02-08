@@ -70,7 +70,12 @@ export class WinDetection {
 
     public addBlink() {
         this.output["elements"].forEach((e) => {
-            e.children[0].classList.add("blink");
+            const coin = new Coin(e);
+            document
+                .getElementsByClassName("column")
+                [coin.ColumnId].children[coin.SlotId].children[0].classList.add(
+                    "blink"
+                );
         });
     }
 
