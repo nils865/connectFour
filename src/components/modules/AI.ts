@@ -31,14 +31,15 @@ export class AI {
             const currentGamefield = this.generateGamefield(i);
             if (currentGamefield === null) continue;
 
-            console.log(currentGamefield["slot"]);
-
             const winDetection = new WinDetection(
                 currentGamefield["slot"],
                 currentGamefield["field"]
             );
 
-            console.log(winDetection.ConnectedElements);
+            if (winDetection.WinState["state"]) {
+                spawnCoin(this.columns[i] as HTMLElement);
+                return true;
+            }
         }
 
         return false;
