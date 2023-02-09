@@ -1,8 +1,20 @@
 <script lang="ts">
-  import { refreshGame } from "./components/modules/GameController";
+  import { refreshGame } from "./modules/GameController";
   import { gamemode } from "./stores"
   import Game from "./components/Game.svelte";
 </script>
+
+<div id="mainPage">
+  <div id="globalHead">
+    <!-- svelte-ignore a11y-click-events-have-key-events -->
+    <img on:click={() => refreshGame()} id="refresh" src="./img/refresh.svg" alt="refresh" draggable="false">
+    <select on:change={() => refreshGame()} bind:value={$gamemode} name="mode" id="mode">
+      <option value="twoPlayer">2p</option>
+      <option value="onePlayer">1p</option>
+    </select>
+  </div>
+    <Game />
+</div>
 
 <style>
   #mainPage {
@@ -52,15 +64,3 @@
     justify-content: center;
   }
 </style>
-
-<div id="mainPage">
-  <div id="globalHead">
-    <!-- svelte-ignore a11y-click-events-have-key-events -->
-    <img on:click={() => refreshGame()} id="refresh" src="./img/refresh.svg" alt="refresh" draggable="false">
-    <select on:change={() => refreshGame()} bind:value={$gamemode} name="mode" id="mode">
-      <option value="twoPlayer">2p</option>
-      <option value="onePlayer">1p</option>
-    </select>
-  </div>
-    <Game />
-</div>

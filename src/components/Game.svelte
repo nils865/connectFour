@@ -32,6 +32,22 @@
     }
 </script>
 
+<div>
+    <h1>{@html $notification}</h1>
+    <div id="gamefield">
+        {#each Array(columnCount) as _, i}
+            <!-- svelte-ignore a11y-click-events-have-key-events -->
+            <div on:click={click} id="column{i}" class="column">
+                {#each Array(rowCount) as _}
+                    <div class="slot">
+                        <div></div>
+                    </div>
+                {/each}
+            </div>
+        {/each}
+    </div>
+</div>
+
 <style>
     #gamefield {
         width: fit-content;
@@ -84,19 +100,3 @@
         text-align: center;
     }
 </style>
-
-<div>
-    <h1>{@html $notification}</h1>
-    <div id="gamefield">
-        {#each Array(columnCount) as _, i}
-            <!-- svelte-ignore a11y-click-events-have-key-events -->
-            <div on:click={click} id="column{i}" class="column">
-                {#each Array(rowCount) as _}
-                    <div class="slot">
-                        <div></div>
-                    </div>
-                {/each}
-            </div>
-        {/each}
-    </div>
-</div>
