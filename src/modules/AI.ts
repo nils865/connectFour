@@ -1,4 +1,4 @@
-import type { CoinList, CoinState } from "../../types";
+import type { CoinList, CoinState } from "../types";
 import {
     columnCount,
     getGamefield,

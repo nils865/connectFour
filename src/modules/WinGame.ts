@@ -1,5 +1,5 @@
-import { winstate, notification } from "../../stores";
-import type { CoinList, CoinState } from "../../types";
+import { winstate, notification } from "../stores";
+import type { CoinList, CoinState } from "../types";
 import {
     getCoinState,
     columnCount,

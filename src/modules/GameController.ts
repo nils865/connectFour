@@ -1,5 +1,5 @@
-import { notification, winstate, coin } from "../../stores";
-import type { CoinState, CoinList } from "../../types";
+import { notification, winstate, coin } from "../stores";
+import type { CoinState, CoinList } from "../types";
 
 export const columnCount: number = 7;
 export const rowCount: number = 6;
