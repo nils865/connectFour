@@ -47,6 +47,10 @@ export class AI {
 	}
 	// check for best pos
 
+	private bestPos() {
+		console.log ("best pos")
+	}
+
 	private generateGamefield(pos: number, team: CoinState) {
 		const gamefield = getGamefield();
 
