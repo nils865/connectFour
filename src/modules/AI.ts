@@ -21,6 +21,8 @@ export class AI {
 	}
 
 	public spawnCoin(): CoinList {
+		this.generateBestPos();
+
 		const attack = this.checkForWin('yellowCoin');
 		if (attack != null) return attack;
 
@@ -59,6 +61,9 @@ export class AI {
 
 	private generateBestPos() {
 		// TODO implement check for best position
+		console.log(
+			this.generatePossibleGamefields(getGamefield(), 'yellowCoin')
+		);
 	}
 
 	private generatePossibleGamefields(
@@ -72,7 +77,13 @@ export class AI {
 			gamefields.push(this.generateGamefield(gamefield, i, team));
 		}
 
-		return gamefields;
+		return gamefields.filter(e => {
+			const winDetection = new WinDetection(e['slot'], e['field']);
+
+			if (winDetection.WinState["state"]) return null;
+
+			return e;
+		});
 	}
 
 	private generateGamefield(
