@@ -33,8 +33,6 @@
 			if (!winArgs['state'] && $gamemode == 'onePlayer') {
 				checkForWin(ai.spawnCoin());
 			}
-
-			// displayGamefield(getGamefield());
 		} else return;
 
 		if ($winstate) return;
