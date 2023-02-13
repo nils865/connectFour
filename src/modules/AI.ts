@@ -47,6 +47,14 @@ export class AI {
 	}
 	// check for best pos
 
+	private generateBestPos() {
+		// TODO implement check for best position
+	}
+
+	private generatePossibleGamefields() {
+		// TODO generate all possible gamefields from a position
+	}
+
 	private generateGamefield(pos: number, team: CoinState) {
 		const gamefield = getGamefield();
 
