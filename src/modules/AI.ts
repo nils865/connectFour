@@ -2,6 +2,7 @@ import type { CoinList, CoinState } from '../types';
 import {
 	collectionToElementArray,
 	columnCount,
+	displayGamefield,
 	getGamefield,
 	isColumnFull,
 	spawnCoin,
@@ -61,9 +62,11 @@ export class AI {
 
 	private generateBestPos() {
 		// TODO implement check for best position
-		console.log(
-			this.generatePossibleGamefields(getGamefield(), 'yellowCoin')
-		);
+		this.generatePossibleGamefields(getGamefield(), 'yellowCoin').forEach(
+			e => {
+				displayGamefield(e["field"])
+			}
+		)
 	}
 
 	private generatePossibleGamefields(
@@ -77,13 +80,20 @@ export class AI {
 			gamefields.push(this.generateGamefield(gamefield, i, team));
 		}
 
-		return gamefields.filter(e => {
-			const winDetection = new WinDetection(e['slot'], e['field']);
+		return gamefields
 
-			if (winDetection.WinState["state"]) return null;
+		// .filter(e => {
+		// 	const winDetection = new WinDetection(e['slot'], e['field']);
 
-			return e;
-		});
+		// 	if (winDetection.WinState["state"]) {
+		// 		console.warn("Unused Branch: ")
+		// 		console.log(e['slot'].parentElement)
+
+		// 		return null
+		// 	}
+
+		// 	return e;
+		// });
 	}
 
 	private generateGamefield(
