@@ -82,10 +82,6 @@ export class AI {
 		});
 
 		fields = newField;
-
-		fields.forEach(e => {
-			displayGamefield(e['field']);
-		});
 	}
 
 	private generatePossibleGamefields(
@@ -107,10 +103,6 @@ export class AI {
 
 		return gamefields.filter(e => {
 			const winDetection = new WinDetection(e['slot'], e['field']);
-
-			console.log();
-			displayGamefield(e['field']);
-			console.log(winDetection.WinState);
 
 			return winDetection.WinState['state'] ? null : e;
 		});
