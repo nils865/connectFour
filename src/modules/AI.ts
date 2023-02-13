@@ -1,11 +1,18 @@
-import type { CoinList, CoinState } from '../../types';
+import type { CoinList, CoinState } from '../types';
 import {
 	columnCount,
+	displayGamefield,
 	getGamefield,
 	isColumnFull,
 	spawnCoin,
 } from './GameController';
+import { VirtualGamefield } from './VirtualGamefield';
 import { WinDetection } from './WinGame';
+
+type outputType = {
+	slot: HTMLElement;
+	field: HTMLCollection;
+};
 
 export class AI {
 	private columns: HTMLCollection;
@@ -15,6 +22,8 @@ export class AI {
 	}
 
 	public spawnCoin(): CoinList {
+		this.generateBestPos();
+
 		const attack = this.checkForWin('yellowCoin');
 		if (attack != null) return attack;
 
@@ -30,7 +39,11 @@ export class AI {
 
 	private checkForWin(team: CoinState) {
 		for (let i = 0; i < columnCount; i++) {
-			const currentGamefield = this.generateGamefield(i, team);
+			const currentGamefield = this.generateGamefield(
+				getGamefield(),
+				i,
+				team
+			);
 			if (currentGamefield === null) continue;
 
 			const winDetection = new WinDetection(
@@ -47,13 +60,42 @@ export class AI {
 	}
 	// check for best pos
 
-	private bestPos() {
-		console.log ("best pos")
+	private generateBestPos() {
+		let fields = this.generatePossibleGamefields(
+			getGamefield(),
+			'yellowCoin'
+		);
 	}
 
-	private generateGamefield(pos: number, team: CoinState) {
-		const gamefield = getGamefield();
+	private generatePossibleGamefields(
+		gamefield: HTMLCollection,
+		team: CoinState
+	) {
+		const gamefields: outputType[] = [];
 
+		for (let i = 0; i < columnCount; i++) {
+			const field = new VirtualGamefield();
+			field.fill(gamefield);
+			field.edit(i, 'top', team);
+
+			gamefields.push({
+				slot: field.getSlot(i, 'top'),
+				field: field.Field,
+			});
+		}
+
+		return gamefields.filter(e => {
+			const winDetection = new WinDetection(e['slot'], e['field']);
+
+			return winDetection.WinState['state'] ? null : e;
+		});
+	}
+
+	private generateGamefield(
+		gamefield: HTMLCollection,
+		pos: number,
+		team: CoinState
+	): outputType {
 		let top = -1;
 
 		for (let i = 0; i < gamefield[pos].children.length; i++) {

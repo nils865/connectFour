@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { refreshGame } from './components/modules/GameController';
+	import { refreshGame } from './modules/GameController';
 	import { gamemode } from './stores';
 	import Game from './components/Game.svelte';
 </script>

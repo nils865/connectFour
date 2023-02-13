@@ -8,8 +8,8 @@
 		"build": "vite build",
 		"preview": "vite preview",
 		"check": "svelte-check --tsconfig ./tsconfig.json",
-		"pretty": "npx prettier --write .",
-		"deploy": "gh-pages -d dist"
+		"deploy": "gh-pages -d dist",
+		"format": "npx prettier --write ."
 	},
 	"devDependencies": {
 		"@sveltejs/vite-plugin-svelte": "^2.0.0",
