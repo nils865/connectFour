@@ -8,6 +8,11 @@ import {
 } from './GameController';
 import { WinDetection } from './WinGame';
 
+type outputType = {
+	slot: HTMLElement;
+	field: HTMLCollection;
+};
+
 export class AI {
 	private columns: HTMLCollection;
 
@@ -31,7 +36,11 @@ export class AI {
 
 	private checkForWin(team: CoinState) {
 		for (let i = 0; i < columnCount; i++) {
-			const currentGamefield = this.generateGamefield(getGamefield(), i, team);
+			const currentGamefield = this.generateGamefield(
+				getGamefield(),
+				i,
+				team
+			);
 			if (currentGamefield === null) continue;
 
 			const winDetection = new WinDetection(
@@ -52,11 +61,25 @@ export class AI {
 		// TODO implement check for best position
 	}
 
-	private generatePossibleGamefields(gamefield: HTMLElement[]) {
+	private generatePossibleGamefields(
+		gamefield: HTMLCollection,
+		team: CoinState
+	) {
 		// TODO generate all possible gamefields from a position
+		const gamefields: outputType[] = [];
+
+		for (let i = 0; i < columnCount; i++) {
+			gamefields.push(this.generateGamefield(gamefield, i, team));
+		}
+
+		return gamefields;
 	}
 
-	private generateGamefield(gamefield: HTMLCollection, pos: number, team: CoinState) {
+	private generateGamefield(
+		gamefield: HTMLCollection,
+		pos: number,
+		team: CoinState
+	): outputType {
 		let top = -1;
 
 		for (let i = 0; i < gamefield[pos].children.length; i++) {
