@@ -1,5 +1,6 @@
 import type { CoinList, CoinState } from '../types';
 import {
+	collectionToElementArray,
 	columnCount,
 	getGamefield,
 	isColumnFull,
@@ -30,7 +31,7 @@ export class AI {
 
 	private checkForWin(team: CoinState) {
 		for (let i = 0; i < columnCount; i++) {
-			const currentGamefield = this.generateGamefield(i, team);
+			const currentGamefield = this.generateGamefield(getGamefield(), i, team);
 			if (currentGamefield === null) continue;
 
 			const winDetection = new WinDetection(
@@ -51,13 +52,11 @@ export class AI {
 		// TODO implement check for best position
 	}
 
-	private generatePossibleGamefields() {
+	private generatePossibleGamefields(gamefield: HTMLElement[]) {
 		// TODO generate all possible gamefields from a position
 	}
 
-	private generateGamefield(pos: number, team: CoinState) {
-		const gamefield = getGamefield();
-
+	private generateGamefield(gamefield: HTMLCollection, pos: number, team: CoinState) {
 		let top = -1;
 
 		for (let i = 0; i < gamefield[pos].children.length; i++) {

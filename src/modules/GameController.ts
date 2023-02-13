@@ -4,6 +4,16 @@ import type { CoinState, CoinList } from '../types';
 export const columnCount: number = 7;
 export const rowCount: number = 6;
 
+export function collectionToElementArray(collection: HTMLCollection) {
+	const output: HTMLElement[] = [];
+
+	for (let i = 0; i < collection.length; i++) {
+		output.push(collection[i] as HTMLElement);
+	}
+
+	return output;
+}
+
 export function getGamefield() {
 	const gamefield = document.createElement('div');
 
