@@ -1,8 +1,6 @@
 <script lang="ts">
 	import {
 		columnCount,
-		displayGamefield,
-		getGamefield,
 		rowCount,
 		spawnCoin,
 	} from '../modules/GameController';
@@ -36,7 +34,7 @@
 				checkForWin(ai.spawnCoin());
 			}
 
-			displayGamefield(getGamefield());
+			// displayGamefield(getGamefield());
 		} else return;
 
 		if ($winstate) return;

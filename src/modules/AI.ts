@@ -1,6 +1,5 @@
 import type { CoinList, CoinState } from '../types';
 import {
-	collectionToElementArray,
 	columnCount,
 	displayGamefield,
 	getGamefield,
@@ -62,11 +61,7 @@ export class AI {
 
 	private generateBestPos() {
 		// TODO implement check for best position
-		this.generatePossibleGamefields(getGamefield(), 'yellowCoin').forEach(
-			e => {
-				// displayGamefield(e["field"])
-			}
-		);
+		this.generatePossibleGamefields(getGamefield(), 'yellowCoin');
 	}
 
 	private generatePossibleGamefields(
@@ -77,23 +72,12 @@ export class AI {
 		const gamefields: outputType[] = [];
 
 		for (let i = 0; i < columnCount; i++) {
-			gamefields.push(this.generateGamefield(gamefield, i, team));
+			const field = this.generateGamefield(gamefield, i, team);
+			displayGamefield(field['field']);
+			gamefields[i] = field;
 		}
 
 		return gamefields;
-
-		// .filter(e => {
-		// 	const winDetection = new WinDetection(e['slot'], e['field']);
-
-		// 	if (winDetection.WinState["state"]) {
-		// 		console.warn("Unused Branch: ")
-		// 		console.log(e['slot'].parentElement)
-
-		// 		return null
-		// 	}
-
-		// 	return e;
-		// });
 	}
 
 	private generateGamefield(

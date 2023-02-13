@@ -15,7 +15,6 @@ export function collectionToElementArray(collection: HTMLCollection) {
 }
 
 export function displayGamefield(gamefield: HTMLCollection) {
-	// const field: CoinState[][] = new Array(gamefield.length).map(e => new Array(gamefield[0].children.length))
 	const field: string[] = ['', '', '', '', '', ''];
 
 	for (let i = 0; i < gamefield.length; i++) {
