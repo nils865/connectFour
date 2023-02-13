@@ -110,6 +110,8 @@ export function refreshGame() {
 	coin.set('redCoin');
 	notification.set(`It's <span style="color: red">reds</span> turn`);
 
+	console.clear();
+
 	getAllCoins((e: HTMLElement) => {
 		e.classList.remove('coin');
 		e.classList.remove('blink');

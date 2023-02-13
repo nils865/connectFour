@@ -88,15 +88,15 @@ export class AI {
 			});
 		}
 
-		gamefields.filter(e => {
+		return gamefields.filter(e => {
 			const winDetection = new WinDetection(e['slot'], e['field']);
+
+			console.log();
+			displayGamefield(e['field']);
+			console.log(winDetection.WinState);
 
 			return winDetection.WinState['state'] ? null : e;
 		});
-
-		console.log(gamefields);
-
-		return gamefields;
 	}
 
 	private generateGamefield(
