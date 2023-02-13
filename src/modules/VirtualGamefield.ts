@@ -129,6 +129,7 @@ export class VirtualGamefield {
 	private addSlots(pos: number) {
 		for (let i = 0; i < rowCount; i++) {
 			const slot = document.createElement('div');
+			slot.classList.add('slot');
 
 			slot.appendChild(document.createElement('div'));
 
