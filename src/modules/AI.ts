@@ -61,6 +61,8 @@ export class AI {
 	// check for best pos
 
 	private generateBestPos() {
+		const iterations = 1;
+
 		// TODO implement check for best position
 		// let fields = getGamefield();
 
@@ -68,7 +70,22 @@ export class AI {
 			getGamefield(),
 			'yellowCoin'
 		);
-		// fields = this.generatePossibleGamefields(getGamefield(), 'redCoin')
+
+		const newField: outputType[] = [];
+
+		fields.forEach(e => {
+			this.generatePossibleGamefields(e['field'], 'redCoin').forEach(
+				f => {
+					newField.push(f);
+				}
+			);
+		});
+
+		fields = newField;
+
+		fields.forEach(e => {
+			displayGamefield(e['field']);
+		});
 	}
 
 	private generatePossibleGamefields(
