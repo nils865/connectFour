@@ -6,6 +6,7 @@ import {
 	isColumnFull,
 	spawnCoin,
 } from './GameController';
+import { VirtualGamefield } from './VirtualGamefield';
 import { WinDetection } from './WinGame';
 
 type outputType = {
@@ -60,6 +61,11 @@ export class AI {
 	// check for best pos
 
 	private generateBestPos() {
+		const virtual = new VirtualGamefield();
+		virtual.fill(this.columns);
+
+		displayGamefield(virtual.Field);
+
 		// TODO implement check for best position
 		this.generatePossibleGamefields(getGamefield(), 'yellowCoin');
 	}
@@ -73,7 +79,7 @@ export class AI {
 
 		for (let i = 0; i < columnCount; i++) {
 			const field = this.generateGamefield(gamefield, i, team);
-			displayGamefield(field['field']);
+			// displayGamefield(field['field']);
 			gamefields[i] = field;
 		}
 
