@@ -64,7 +64,7 @@ export class AI {
 		// TODO implement check for best position
 		this.generatePossibleGamefields(getGamefield(), 'yellowCoin').forEach(
 			e => {
-				displayGamefield(e["field"])
+				// displayGamefield(e["field"])
 			}
 		)
 	}

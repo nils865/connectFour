@@ -32,16 +32,16 @@ export function displayGamefield(gamefield: HTMLCollection) {
 			let slot = column.children[j].children[0].classList;
 
 			if (slot.contains("redCoin")) {
-				field[j] += "r "
+				field[j] += "R "
 			} else if (slot.contains("yellowCoin")) {
-				field[j] += "y "
+				field[j] += "Y "
 			} else {
-				field[j] += "- "
+				field[j] += `${j} `
 			}
 		}
 	}
 
-	console.log("\n---------\n")
+	console.log("\n---------------------------\n")
 
 	field.forEach(e => {
 		console.log(e)
