@@ -1,6 +1,7 @@
 import type { CoinList, CoinState } from '../types';
 import {
 	columnCount,
+	displayGamefield,
 	getGamefield,
 	isColumnFull,
 	spawnCoin,
@@ -61,14 +62,17 @@ export class AI {
 
 	private generateBestPos() {
 		// TODO implement check for best position
-		this.generatePossibleGamefields(getGamefield(), 'yellowCoin');
+		this.generatePossibleGamefields(getGamefield(), 'yellowCoin').forEach(
+			e => {
+				displayGamefield(e['field']);
+			}
+		);
 	}
 
 	private generatePossibleGamefields(
 		gamefield: HTMLCollection,
 		team: CoinState
 	) {
-		// TODO generate all possible gamefields from a position
 		const gamefields: outputType[] = [];
 
 		for (let i = 0; i < columnCount; i++) {
@@ -76,15 +80,17 @@ export class AI {
 			field.fill(gamefield);
 			field.edit(i, 'top', team);
 
-			field.showField();
-
 			gamefields.push({
 				slot: field.getSlot(i, 'top'),
 				field: field.Field,
 			});
 		}
 
-		return gamefields;
+		return gamefields.filter(e => {
+			const winDetection = new WinDetection(e['slot'], e['field']);
+
+			return winDetection.WinState['state'] ? null : e;
+		});
 	}
 
 	private generateGamefield(
