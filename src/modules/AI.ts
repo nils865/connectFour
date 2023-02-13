@@ -65,6 +65,17 @@ export class AI {
 			getGamefield(),
 			'yellowCoin'
 		);
+
+		fields = fields.filter(e => {
+			const possibilities = this.generatePossibleGamefields(
+				e['field'],
+				'redCoin'
+			);
+
+			return possibilities.length >= columnCount ? e : null;
+		});
+
+		console.log(fields);
 	}
 
 	private generatePossibleGamefields(
