@@ -15,12 +15,11 @@ export class VirtualGamefield {
 	}
 
 	public edit(column: number, row: number, team: CoinState) {
-		const slot = this.field.children[column].children[
-			row
-		].children[0].classList
+		const slot =
+			this.field.children[column].children[row].children[0].classList;
 
-		slot.add(team)
-		slot.add('coin')
+		slot.add(team);
+		slot.add('coin');
 	}
 
 	public fill(collection: HTMLCollection) {
