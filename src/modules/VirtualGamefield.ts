@@ -79,6 +79,8 @@ export class VirtualGamefield {
 			}
 		}
 
+		row = row === 'top' ? 0 : row;
+
 		const slot =
 			this.field.children[column].children[row].children[0].classList;
 

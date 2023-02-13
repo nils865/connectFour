@@ -62,11 +62,13 @@ export class AI {
 
 	private generateBestPos() {
 		// TODO implement check for best position
-		this.generatePossibleGamefields(getGamefield(), 'yellowCoin').forEach(
-			e => {
-				displayGamefield(e['field']);
-			}
+		// let fields = getGamefield();
+
+		let fields = this.generatePossibleGamefields(
+			getGamefield(),
+			'yellowCoin'
 		);
+		// fields = this.generatePossibleGamefields(getGamefield(), 'redCoin')
 	}
 
 	private generatePossibleGamefields(
@@ -86,11 +88,15 @@ export class AI {
 			});
 		}
 
-		return gamefields.filter(e => {
+		gamefields.filter(e => {
 			const winDetection = new WinDetection(e['slot'], e['field']);
 
 			return winDetection.WinState['state'] ? null : e;
 		});
+
+		console.log(gamefields);
+
+		return gamefields;
 	}
 
 	private generateGamefield(
