@@ -63,6 +63,7 @@ export class AI {
 	private generateBestPos() {
 		const virtual = new VirtualGamefield();
 		virtual.fill(this.columns);
+		virtual.edit(0, 0, 'redCoin')
 
 		displayGamefield(virtual.Field);
 

@@ -1,3 +1,4 @@
+import type { CoinState } from '../types';
 import { columnCount, rowCount } from './GameController';
 
 export class VirtualGamefield {
@@ -11,6 +12,15 @@ export class VirtualGamefield {
 
 	public get Field() {
 		return this.field.children;
+	}
+
+	public edit(column: number, row: number, team: CoinState) {
+		const slot = this.field.children[column].children[
+			row
+		].children[0].classList
+
+		slot.add(team)
+		slot.add('coin')
 	}
 
 	public fill(collection: HTMLCollection) {
