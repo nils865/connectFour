@@ -66,7 +66,7 @@ export class AI {
 			e => {
 				// displayGamefield(e["field"])
 			}
-		)
+		);
 	}
 
 	private generatePossibleGamefields(
@@ -80,7 +80,7 @@ export class AI {
 			gamefields.push(this.generateGamefield(gamefield, i, team));
 		}
 
-		return gamefields
+		return gamefields;
 
 		// .filter(e => {
 		// 	const winDetection = new WinDetection(e['slot'], e['field']);

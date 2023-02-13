@@ -16,36 +16,29 @@ export function collectionToElementArray(collection: HTMLCollection) {
 
 export function displayGamefield(gamefield: HTMLCollection) {
 	// const field: CoinState[][] = new Array(gamefield.length).map(e => new Array(gamefield[0].children.length))
-	const field: string[] = [
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-	]
+	const field: string[] = ['', '', '', '', '', ''];
 
 	for (let i = 0; i < gamefield.length; i++) {
-		const column = gamefield[i]
-		
+		const column = gamefield[i];
+
 		for (let j = 0; j < column.children.length; j++) {
 			let slot = column.children[j].children[0].classList;
 
-			if (slot.contains("redCoin")) {
-				field[j] += "R "
-			} else if (slot.contains("yellowCoin")) {
-				field[j] += "Y "
+			if (slot.contains('redCoin')) {
+				field[j] += 'R ';
+			} else if (slot.contains('yellowCoin')) {
+				field[j] += 'Y ';
 			} else {
-				field[j] += `${j} `
+				field[j] += `${j} `;
 			}
 		}
 	}
 
-	console.log("\n---------------------------\n")
+	console.log('\n---------------------------\n');
 
 	field.forEach(e => {
-		console.log(e)
-	})
+		console.log(e);
+	});
 }
 
 export function getGamefield() {
