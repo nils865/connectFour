@@ -1,7 +1,6 @@
 import type { CoinList, CoinState } from '../types';
 import {
 	columnCount,
-	displayGamefield,
 	getGamefield,
 	isColumnFull,
 	spawnCoin,
@@ -61,12 +60,6 @@ export class AI {
 	// check for best pos
 
 	private generateBestPos() {
-		const virtual = new VirtualGamefield();
-		virtual.fill(this.columns);
-		virtual.edit(0, 0, 'redCoin');
-
-		displayGamefield(virtual.Field);
-
 		// TODO implement check for best position
 		this.generatePossibleGamefields(getGamefield(), 'yellowCoin');
 	}
@@ -79,9 +72,16 @@ export class AI {
 		const gamefields: outputType[] = [];
 
 		for (let i = 0; i < columnCount; i++) {
-			const field = this.generateGamefield(gamefield, i, team);
-			// displayGamefield(field['field']);
-			gamefields[i] = field;
+			const field = new VirtualGamefield();
+			field.fill(gamefield);
+			field.edit(i, 'top', team);
+
+			field.showField();
+
+			gamefields.push({
+				slot: field.getSlot(i, 'top'),
+				field: field.Field,
+			});
 		}
 
 		return gamefields;

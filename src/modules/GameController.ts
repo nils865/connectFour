@@ -14,32 +14,6 @@ export function collectionToElementArray(collection: HTMLCollection) {
 	return output;
 }
 
-export function displayGamefield(gamefield: HTMLCollection) {
-	const field: string[] = ['', '', '', '', '', ''];
-
-	for (let i = 0; i < gamefield.length; i++) {
-		const column = gamefield[i];
-
-		for (let j = 0; j < column.children.length; j++) {
-			let slot = column.children[j].children[0].classList;
-
-			if (slot.contains('redCoin')) {
-				field[j] += 'R ';
-			} else if (slot.contains('yellowCoin')) {
-				field[j] += 'Y ';
-			} else {
-				field[j] += `${j} `;
-			}
-		}
-	}
-
-	console.log('\n---------------------------\n');
-
-	field.forEach(e => {
-		console.log(e);
-	});
-}
-
 export function getGamefield() {
 	const gamefield = document.createElement('div');
 

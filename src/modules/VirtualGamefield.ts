@@ -14,7 +14,71 @@ export class VirtualGamefield {
 		return this.field.children;
 	}
 
-	public edit(column: number, row: number, team: CoinState) {
+	public getSlot(column: number, row: number | 'top') {
+		if (row === 'top') {
+			for (
+				let i = 0;
+				i < this.field.children[column].children.length;
+				i++
+			) {
+				if (
+					this.field.children[column].children[
+						i
+					].children[0].classList.contains('coin')
+				) {
+					row = i;
+					break;
+				}
+			}
+		}
+
+		// console.log(`${column} ${row}`)
+		return this.field.children[column].children[row] as HTMLElement;
+	}
+
+	public showField() {
+		// Springfield below
+		const stringField: string[] = new Array(rowCount).fill('');
+
+		for (let i = 0; i < columnCount; i++) {
+			const column = this.field.children[i];
+
+			for (let j = 0; j < rowCount; j++) {
+				let slot = column.children[j].children[0].classList;
+
+				if (slot.contains('redCoin')) {
+					stringField[j] += 'R ';
+				} else if (slot.contains('yellowCoin')) {
+					stringField[j] += 'Y ';
+				} else {
+					stringField[j] += `${j} `;
+				}
+			}
+		}
+
+		console.log('\n---------------------------\n');
+
+		stringField.forEach(e => {
+			console.log(e);
+		});
+	}
+
+	public edit(column: number, row: number | 'top', team: CoinState) {
+		if (row === 'top') {
+			for (
+				let i = 0;
+				i < this.field.children[column].children.length;
+				i++
+			) {
+				if (
+					!this.field.children[column].children[
+						i
+					].children[0].classList.contains('coin')
+				)
+					row = i;
+			}
+		}
+
 		const slot =
 			this.field.children[column].children[row].children[0].classList;
 
