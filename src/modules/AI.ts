@@ -49,8 +49,10 @@ export class AI {
 
 			e.edit(i, 'top', 'yellowCoin');
 
-			e.showField();
+			return e;
 		});
+
+		yellowGameboards.forEach(e => e.showField());
 
 		return -1;
 	}

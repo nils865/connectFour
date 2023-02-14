@@ -32,8 +32,11 @@ export class VirtualGamefield {
 			}
 		}
 
-		// console.log(`${column} ${row}`)
-		return this.field.children[column].children[row] as HTMLElement;
+		return {
+			element: this.field.children[column].children[row] as HTMLElement,
+			column: column,
+			row: row,
+		};
 	}
 
 	public showField() {
