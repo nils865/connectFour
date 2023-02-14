@@ -57,7 +57,32 @@ export class AI {
 			return e;
 		});
 
-		yellowGameboards.forEach(e => e.showField());
+		const possibleMoves: {
+			move: VirtualGamefield;
+			children: VirtualGamefield[];
+		}[] = Array.from({ length: columnCount }, () => {
+			return { move: null, children: [] };
+		});
+
+		possibleMoves.forEach((e, i) => {
+			e.move = yellowGameboards[i];
+			e.children = Array.from(
+				{ length: columnCount },
+				() => new VirtualGamefield()
+			);
+
+			e.children.forEach((f, j) => {
+				f.fill(e.move.Field);
+				f.edit(j, 'top', 'redCoin');
+			});
+		});
+
+		// ! debug output REMOVE LATER
+		possibleMoves.forEach(e => {
+			e.children.forEach(f => {
+				f.showField();
+			});
+		});
 
 		return -1;
 	}
