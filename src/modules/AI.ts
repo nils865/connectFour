@@ -42,12 +42,17 @@ export class AI {
 		const yellowGameboards: VirtualGamefield[] = Array.from(
 			{ length: columnCount },
 			() => new VirtualGamefield()
-		);
-
-		yellowGameboards.forEach((e, i) => {
+		).filter((e, i) => {
 			e.fill(document.getElementsByClassName('column'));
 
 			e.edit(i, 'top', 'yellowCoin');
+
+			const winDetection = new WinDetection(
+				e.getSlot(i, 'top')['element'],
+				e.Field
+			);
+
+			if (winDetection.WinState['state']) return null;
 
 			return e;
 		});
