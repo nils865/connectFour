@@ -39,14 +39,17 @@ export class AI {
 
 	// generate best position for the AI
 	private generateBestPos(): number {
-		// generate all possible gameboards for yellow
-		const yellowGameboards: VirtualGamefield[] = new Array(
-			columnCount
-		).fill(new VirtualGamefield());
+		const yellowGameboards: VirtualGamefield[] = Array.from(
+			{ length: columnCount },
+			() => new VirtualGamefield()
+		);
 
-		yellowGameboards.forEach((gameboard, index) => {
-			console.log(gameboard);
-			console.log(index);
+		yellowGameboards.forEach((e, i) => {
+			e.fill(document.getElementsByClassName('column'));
+
+			e.edit(i, 'top', 'yellowCoin');
+
+			e.showField();
 		});
 
 		return -1;
