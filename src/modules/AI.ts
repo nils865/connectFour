@@ -22,6 +22,8 @@ export class AI {
 	}
 
 	public spawnCoin(): CoinList {
+		this.generateBestPos();
+
 		const attack = this.checkForWin('yellowCoin');
 		if (attack != null) return attack;
 
@@ -33,6 +35,21 @@ export class AI {
 		if (isColumnFull(this.columns[currentColumn] as HTMLElement))
 			return this.spawnCoin();
 		else return spawnCoin(this.columns[currentColumn] as HTMLElement);
+	}
+
+	// generate best position for the AI
+	private generateBestPos(): number {
+		// generate all possible gameboards for yellow
+		const yellowGameboards: VirtualGamefield[] = new Array(
+			columnCount
+		).fill(new VirtualGamefield());
+
+		yellowGameboards.forEach((gameboard, index) => {
+			console.log(gameboard);
+			console.log(index);
+		});
+
+		return -1;
 	}
 
 	private checkForWin(team: CoinState) {
