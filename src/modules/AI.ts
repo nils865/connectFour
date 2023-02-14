@@ -37,6 +37,56 @@ export class AI {
 		else return spawnCoin(this.columns[currentColumn] as HTMLElement);
 	}
 
+	// generate best position for the AI
+	private generateBestPos(): number {
+		const yellowGameboards: VirtualGamefield[] = Array.from(
+			{ length: columnCount },
+			() => new VirtualGamefield()
+		).filter((e, i) => {
+			e.fill(document.getElementsByClassName('column'));
+
+			e.edit(i, 'top', 'yellowCoin');
+
+			const winDetection = new WinDetection(
+				e.getSlot(i, 'top')['element'],
+				e.Field
+			);
+
+			if (winDetection.WinState['state']) return null;
+
+			return e;
+		});
+
+		const possibleMoves: {
+			move: VirtualGamefield;
+			children: VirtualGamefield[];
+		}[] = Array.from({ length: columnCount }, () => {
+			return { move: null, children: [] };
+		});
+
+		possibleMoves.forEach((e, i) => {
+			e.move = yellowGameboards[i];
+			e.children = Array.from(
+				{ length: columnCount },
+				() => new VirtualGamefield()
+			);
+
+			e.children.forEach((f, j) => {
+				f.fill(e.move.Field);
+				f.edit(j, 'top', 'redCoin');
+			});
+		});
+
+		// ! debug output REMOVE LATER
+		possibleMoves.forEach(e => {
+			e.children.forEach(f => {
+				f.showField();
+			});
+		});
+
+		return -1;
+	}
+
 	private checkForWin(team: CoinState) {
 		for (let i = 0; i < columnCount; i++) {
 			const currentGamefield = this.generateGamefield(
@@ -57,49 +107,6 @@ export class AI {
 		}
 
 		return null;
-	}
-	// check for best pos
-
-	private generateBestPos() {
-		let fields = this.generatePossibleGamefields(
-			getGamefield(),
-			'yellowCoin'
-		);
-
-		fields = fields.filter(e => {
-			const possibilities = this.generatePossibleGamefields(
-				e['field'],
-				'redCoin'
-			);
-
-			return possibilities.length >= columnCount ? e : null;
-		});
-
-		console.log(fields);
-	}
-
-	private generatePossibleGamefields(
-		gamefield: HTMLCollection,
-		team: CoinState
-	) {
-		const gamefields: outputType[] = [];
-
-		for (let i = 0; i < columnCount; i++) {
-			const field = new VirtualGamefield();
-			field.fill(gamefield);
-			field.edit(i, 'top', team);
-
-			gamefields.push({
-				slot: field.getSlot(i, 'top'),
-				field: field.Field,
-			});
-		}
-
-		return gamefields.filter(e => {
-			const winDetection = new WinDetection(e['slot'], e['field']);
-
-			return winDetection.WinState['state'] ? null : e;
-		});
 	}
 
 	private generateGamefield(
