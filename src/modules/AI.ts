@@ -30,10 +30,13 @@ export class AI {
 
 		const bestPos = this.generateBestPos();
 
-		if (bestPos >= 0)
-			return spawnCoin(this.columns[bestPos] as HTMLElement);
+		if (bestPos >= 0) {
+			const coin = spawnCoin(this.columns[bestPos] as HTMLElement);
 
-		return null;
+			if (coin === undefined) return this.spawnCoin();
+
+			return coin;
+		}
 	}
 
 	// generate best position for the AI
