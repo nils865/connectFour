@@ -28,13 +28,18 @@ export class AI {
 		const defend = this.checkForWin('redCoin');
 		if (defend != null) return defend;
 
-		this.generateBestPos();
+		const bestPos = this.generateBestPos();
 
-		const currentColumn = Math.floor(Math.random() * columnCount);
+		if (bestPos >= 0)
+			return spawnCoin(this.columns[bestPos] as HTMLElement);
 
-		if (isColumnFull(this.columns[currentColumn] as HTMLElement))
-			return this.spawnCoin();
-		else return spawnCoin(this.columns[currentColumn] as HTMLElement);
+		return null;
+
+		// const currentColumn = Math.floor(Math.random() * columnCount);
+
+		// if (isColumnFull(this.columns[currentColumn] as HTMLElement))
+		// 	return this.spawnCoin();
+		// else return spawnCoin(this.columns[currentColumn] as HTMLElement);
 	}
 
 	// generate best position for the AI
