@@ -57,32 +57,47 @@ export class AI {
 			return e;
 		});
 
-		const possibleMoves: {
+		let possibleMoves: {
 			move: VirtualGamefield;
 			children: VirtualGamefield[];
-		}[] = Array.from({ length: columnCount }, () => {
+		}[] = Array.from({ length: yellowGameboards.length }, () => {
 			return { move: null, children: [] };
 		});
 
-		possibleMoves.forEach((e, i) => {
+		possibleMoves = possibleMoves.filter((e, i) => {
 			e['move'] = yellowGameboards[i];
 			e['children'] = Array.from(
 				{ length: columnCount },
 				() => new VirtualGamefield()
 			);
 
-			e['children'].forEach((f, j) => {
-				f.fill(e.move.Field);
+			e['children'] = e['children'].filter((f, j) => {
+				f.fill(e['move'].Field);
 				f.edit(j, 'top', 'redCoin');
+
+				const winDetection = new WinDetection(
+					f.getSlot(j, 'top')['element'],
+					f.Field
+				);
+
+				if (winDetection.WinState['state']) return null;
+
+				return f;
 			});
+
+			if (e['children'].length < columnCount) return null;
+
+			return e;
 		});
 
 		// ! debug output REMOVE LATER
-		possibleMoves.forEach(e => {
-			e.children.forEach(f => {
-				f.showField();
-			});
-		});
+		// possibleMoves.forEach(e => {
+		// 	e.children.forEach(f => {
+		// 		f.showField();
+		// 	});
+		// });
+		// possibleMoves.forEach(e => {})
+		console.log(possibleMoves.length);
 
 		return -1;
 	}
