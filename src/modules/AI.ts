@@ -1,11 +1,5 @@
 import type { CoinList, CoinState } from '../types';
-import {
-	columnCount,
-	displayGamefield,
-	getGamefield,
-	isColumnFull,
-	spawnCoin,
-} from './GameController';
+import { columnCount, getGamefield, spawnCoin } from './GameController';
 import { VirtualGamefield } from './VirtualGamefield';
 import { WinDetection } from './WinGame';
 
