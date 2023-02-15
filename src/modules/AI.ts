@@ -22,13 +22,13 @@ export class AI {
 	}
 
 	public spawnCoin(): CoinList {
-		this.generateBestPos();
-
 		const attack = this.checkForWin('yellowCoin');
 		if (attack != null) return attack;
 
 		const defend = this.checkForWin('redCoin');
 		if (defend != null) return defend;
+
+		this.generateBestPos();
 
 		const currentColumn = Math.floor(Math.random() * columnCount);
 
@@ -62,9 +62,7 @@ export class AI {
 			children: VirtualGamefield[];
 		}[] = Array.from({ length: yellowGameboards.length }, () => {
 			return { move: null, children: [] };
-		});
-
-		possibleMoves = possibleMoves.filter((e, i) => {
+		}).filter((e, i) => {
 			e['move'] = yellowGameboards[i];
 			e['children'] = Array.from(
 				{ length: columnCount },
@@ -90,6 +88,11 @@ export class AI {
 			return e;
 		});
 
+		const randSlot =
+			possibleMoves[Math.floor(Math.random() * possibleMoves.length)][
+				'move'
+			];
+
 		// ! debug output REMOVE LATER
 		// possibleMoves.forEach(e => {
 		// 	e.children.forEach(f => {
@@ -97,7 +100,7 @@ export class AI {
 		// 	});
 		// });
 		// possibleMoves.forEach(e => {})
-		console.log(possibleMoves.length);
+		// console.log(possibleMoves.length);
 
 		return -1;
 	}
