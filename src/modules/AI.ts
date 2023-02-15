@@ -65,13 +65,13 @@ export class AI {
 		});
 
 		possibleMoves.forEach((e, i) => {
-			e.move = yellowGameboards[i];
-			e.children = Array.from(
+			e['move'] = yellowGameboards[i];
+			e['children'] = Array.from(
 				{ length: columnCount },
 				() => new VirtualGamefield()
 			);
 
-			e.children.forEach((f, j) => {
+			e['children'].forEach((f, j) => {
 				f.fill(e.move.Field);
 				f.edit(j, 'top', 'redCoin');
 			});
