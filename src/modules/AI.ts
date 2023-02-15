@@ -39,23 +39,25 @@ export class AI {
 
 	// generate best position for the AI
 	private generateBestPos(): number {
-		const yellowGameboards: VirtualGamefield[] = Array.from(
-			{ length: columnCount },
-			() => new VirtualGamefield()
-		).filter((e, i) => {
-			e.fill(document.getElementsByClassName('column'));
+		const yellowGameboards: { field: VirtualGamefield; id: number }[] =
+			Array.from({ length: columnCount }, () => {
+				return { field: new VirtualGamefield(), id: 0 };
+			}).filter((e, i) => {
+				e['id'] = i;
 
-			e.edit(i, 'top', 'yellowCoin');
+				e['field'].fill(document.getElementsByClassName('column'));
 
-			const winDetection = new WinDetection(
-				e.getSlot(i, 'top')['element'],
-				e.Field
-			);
+				e['field'].edit(i, 'top', 'yellowCoin');
 
-			if (winDetection.WinState['state']) return null;
+				const winDetection = new WinDetection(
+					e['field'].getSlot(i, 'top')['element'],
+					e['field'].Field
+				);
 
-			return e;
-		});
+				if (winDetection.WinState['state']) return null;
+
+				return e;
+			});
 
 		let possibleMoves: {
 			move: VirtualGamefield;
@@ -63,7 +65,9 @@ export class AI {
 		}[] = Array.from({ length: yellowGameboards.length }, () => {
 			return { move: null, children: [] };
 		}).filter((e, i) => {
-			e['move'] = yellowGameboards[i];
+			e['move'] = yellowGameboards[i]['field'];
+			e['id'] = yellowGameboards[i]['id'];
+
 			e['children'] = Array.from(
 				{ length: columnCount },
 				() => new VirtualGamefield()
@@ -90,8 +94,10 @@ export class AI {
 
 		const randSlot =
 			possibleMoves[Math.floor(Math.random() * possibleMoves.length)][
-				'move'
+				'id'
 			];
+
+		return randSlot;
 
 		// ! debug output REMOVE LATER
 		// possibleMoves.forEach(e => {
