@@ -22,69 +22,84 @@ export class AI {
 	}
 
 	public spawnCoin(): CoinList {
-		this.generateBestPos();
-
 		const attack = this.checkForWin('yellowCoin');
 		if (attack != null) return attack;
 
 		const defend = this.checkForWin('redCoin');
 		if (defend != null) return defend;
 
-		const currentColumn = Math.floor(Math.random() * columnCount);
+		const bestPos = this.generateBestPos();
 
-		if (isColumnFull(this.columns[currentColumn] as HTMLElement))
-			return this.spawnCoin();
-		else return spawnCoin(this.columns[currentColumn] as HTMLElement);
+		if (bestPos >= 0) {
+			const coin = spawnCoin(this.columns[bestPos] as HTMLElement);
+
+			if (coin === undefined) return this.spawnCoin();
+
+			return coin;
+		}
 	}
 
 	// generate best position for the AI
 	private generateBestPos(): number {
-		const yellowGameboards: VirtualGamefield[] = Array.from(
-			{ length: columnCount },
-			() => new VirtualGamefield()
-		).filter((e, i) => {
-			e.fill(document.getElementsByClassName('column'));
+		const yellowGameboards: { field: VirtualGamefield; id: number }[] =
+			Array.from({ length: columnCount }, () => {
+				return { field: new VirtualGamefield(), id: 0 };
+			}).filter((e, i) => {
+				e['id'] = i;
 
-			e.edit(i, 'top', 'yellowCoin');
+				e['field'].fill(document.getElementsByClassName('column'));
 
-			const winDetection = new WinDetection(
-				e.getSlot(i, 'top')['element'],
-				e.Field
-			);
+				e['field'].edit(i, 'top', 'yellowCoin');
 
-			if (winDetection.WinState['state']) return null;
+				const winDetection = new WinDetection(
+					e['field'].getSlot(i, 'top')['element'],
+					e['field'].Field
+				);
 
-			return e;
-		});
+				if (winDetection.WinState['state']) return null;
 
-		const possibleMoves: {
+				return e;
+			});
+
+		let possibleMoves: {
 			move: VirtualGamefield;
 			children: VirtualGamefield[];
-		}[] = Array.from({ length: columnCount }, () => {
+		}[] = Array.from({ length: yellowGameboards.length }, () => {
 			return { move: null, children: [] };
-		});
+		}).filter((e, i) => {
+			e['move'] = yellowGameboards[i]['field'];
+			e['id'] = yellowGameboards[i]['id'];
 
-		possibleMoves.forEach((e, i) => {
-			e.move = yellowGameboards[i];
-			e.children = Array.from(
+			e['children'] = Array.from(
 				{ length: columnCount },
 				() => new VirtualGamefield()
 			);
 
-			e.children.forEach((f, j) => {
-				f.fill(e.move.Field);
+			e['children'] = e['children'].filter((f, j) => {
+				f.fill(e['move'].Field);
 				f.edit(j, 'top', 'redCoin');
+
+				const winDetection = new WinDetection(
+					f.getSlot(j, 'top')['element'],
+					f.Field
+				);
+
+				if (winDetection.WinState['state']) return null;
+
+				return f;
 			});
+
+			if (e['children'].length < columnCount) return null;
+
+			return e;
 		});
 
-		// ! debug output REMOVE LATER
-		possibleMoves.forEach(e => {
-			e.children.forEach(f => {
-				f.showField();
-			});
-		});
+		const randSlot =
+			possibleMoves[Math.floor(Math.random() * possibleMoves.length)][
+				'id'
+			];
 
-		return -1;
+		return randSlot;
 	}
 
 	private checkForWin(team: CoinState) {
