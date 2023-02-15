@@ -34,12 +34,6 @@ export class AI {
 			return spawnCoin(this.columns[bestPos] as HTMLElement);
 
 		return null;
-
-		// const currentColumn = Math.floor(Math.random() * columnCount);
-
-		// if (isColumnFull(this.columns[currentColumn] as HTMLElement))
-		// 	return this.spawnCoin();
-		// else return spawnCoin(this.columns[currentColumn] as HTMLElement);
 	}
 
 	// generate best position for the AI
@@ -103,17 +97,6 @@ export class AI {
 			];
 
 		return randSlot;
-
-		// ! debug output REMOVE LATER
-		// possibleMoves.forEach(e => {
-		// 	e.children.forEach(f => {
-		// 		f.showField();
-		// 	});
-		// });
-		// possibleMoves.forEach(e => {})
-		// console.log(possibleMoves.length);
-
-		return -1;
 	}
 
 	private checkForWin(team: CoinState) {
