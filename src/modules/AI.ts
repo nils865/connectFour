@@ -44,6 +44,8 @@ export class AI {
 			Array.from({ length: columnCount }, () => {
 				return { field: new VirtualGamefield(), id: 0 };
 			}).filter((e, i) => {
+				if (isColumnFull(this.columns[i] as HTMLElement)) return null;
+
 				e['id'] = i;
 
 				e['field'].fill(document.getElementsByClassName('column'));
@@ -87,6 +89,9 @@ export class AI {
 
 				return f;
 			});
+
+			// ! debug code REMOVE LATER
+			console.log(e.children.length);
 
 			if (e.children.length <= 0) {
 				for (let i = 0; i < columnCount; i++) {
