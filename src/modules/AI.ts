@@ -1,5 +1,10 @@
 import type { CoinList, CoinState } from '../types';
-import { columnCount, getGamefield, spawnCoin } from './GameController';
+import {
+	columnCount,
+	getGamefield,
+	isColumnFull,
+	spawnCoin,
+} from './GameController';
 import { VirtualGamefield } from './VirtualGamefield';
 import { WinDetection } from './WinGame';
 
@@ -82,6 +87,12 @@ export class AI {
 
 				return f;
 			});
+
+			if (e.children.length <= 0) {
+				for (let i = 0; i < columnCount; i++) {
+					if (!isColumnFull(this.columns[i] as HTMLElement)) return i;
+				}
+			}
 
 			if (e['children'].length < columnCount) return null;
 
