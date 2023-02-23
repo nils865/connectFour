@@ -2,6 +2,7 @@
 	import { refreshGame } from './modules/GameController';
 	import { gamemode } from './stores';
 	import Game from './components/Game.svelte';
+	import Footer from './components/Footer.svelte';
 </script>
 
 <div id="mainPage">
@@ -23,6 +24,7 @@
 		</select>
 	</div>
 	<Game />
+	<Footer />
 </div>
 
 <style>
