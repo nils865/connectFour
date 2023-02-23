@@ -11,7 +11,7 @@
 	}
 
 	.footer {
-		background-color: #323236;
+		background-color: #222226;
 		width: 100%;
 		height: var(--footer-height);
 
