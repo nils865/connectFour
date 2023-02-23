@@ -110,4 +110,18 @@
 	h1 {
 		text-align: center;
 	}
+
+	@media only screen and (max-width: 700px) {
+		.slot {
+			width: 3em;
+			height: 3em;
+		}
+	}
+
+	@media only screen and (max-width: 400px) {
+		.slot {
+			width: 2em;
+			height: 2em;
+		}
+	}
 </style>

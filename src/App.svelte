@@ -2,6 +2,7 @@
 	import { refreshGame } from './modules/GameController';
 	import { gamemode } from './stores';
 	import Game from './components/Game.svelte';
+	import Footer from './components/Footer.svelte';
 </script>
 
 <div id="mainPage">
@@ -23,14 +24,16 @@
 		</select>
 	</div>
 	<Game />
+	<footer>
+		<Footer />
+	</footer>
 </div>
 
 <style>
 	#mainPage {
 		display: flex;
-		align-items: center;
-		justify-content: center;
 		flex-direction: column;
+		align-items: center;
 
 		width: 100vw;
 		height: 100vh;
@@ -71,5 +74,14 @@
 		flex-direction: row;
 		align-items: center;
 		justify-content: center;
+
+		margin-top: 1em;
+	}
+
+	footer {
+		/* margin-top: 20px; */
+		position: fixed;
+		bottom: 0;
+		width: 100%;
 	}
 </style>
