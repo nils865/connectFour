@@ -24,15 +24,16 @@
 		</select>
 	</div>
 	<Game />
-	<Footer />
+	<footer>
+		<Footer />
+	</footer>
 </div>
 
 <style>
 	#mainPage {
 		display: flex;
-		align-items: center;
-		justify-content: center;
 		flex-direction: column;
+		align-items: center;
 
 		width: 100vw;
 		height: 100vh;
@@ -73,5 +74,14 @@
 		flex-direction: row;
 		align-items: center;
 		justify-content: center;
+
+		margin-top: 1em;
+	}
+
+	footer {
+		/* margin-top: 20px; */
+		position: fixed;
+		bottom: 0;
+		width: 100%;
 	}
 </style>

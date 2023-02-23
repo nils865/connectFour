@@ -6,11 +6,14 @@
 </div>
 
 <style>
+	:root {
+		--footer-height: 55px;
+	}
+
 	.footer {
-		margin-top: 20px;
 		background-color: #323236;
 		width: 100%;
-		height: 55px;
+		height: var(--footer-height);
 
 		display: flex;
 		flex-direction: column;
